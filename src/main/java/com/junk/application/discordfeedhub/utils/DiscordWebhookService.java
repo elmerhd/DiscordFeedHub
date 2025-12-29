@@ -1,6 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RSSSource1;
+import com.junk.application.discordfeedhub.model.RSSSource;
 import com.rometools.rome.feed.synd.SyndEntry;
 import java.io.IOException;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class DiscordWebhookService {
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static void send(String webhookUrl, JSONObject payload, RSSSource1 source, SyndEntry entry) throws IOException {
+    public static void send(String webhookUrl, JSONObject payload, RSSSource source, SyndEntry entry) throws IOException {
 
         RequestBody body = RequestBody.create(
                 payload.toString(),

@@ -1,6 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RSSSource1;
+import com.junk.application.discordfeedhub.model.RSSSource;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,9 +55,9 @@ public class RSSScheduler {
             );
         }
         
-        List<RSSSource1> sources = DatabaseManager.loadSources(true);
+        List<RSSSource> sources = DatabaseManager.loadSources(true);
         
-        for (RSSSource1 source : sources) {
+        for (RSSSource source : sources) {
             rssExecutor.submit(new RSSReaderTask(source));
         }
     }
