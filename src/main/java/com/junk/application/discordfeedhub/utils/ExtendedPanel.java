@@ -1,11 +1,9 @@
 package com.junk.application.discordfeedhub.utils;
 
-import javax.swing.JButton;
-
 /**
  *
  * @author elmerhd
  */
-public interface ExtendedComponent {
+public interface ExtendedPanel {
     public void closeParentDialog();
 }

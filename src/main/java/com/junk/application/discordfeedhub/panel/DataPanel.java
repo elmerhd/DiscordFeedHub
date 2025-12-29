@@ -4,6 +4,8 @@ import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.RssSourceTableModel;
 import com.junk.application.discordfeedhub.utils.DatabaseStatementStatus;
+import com.junk.application.discordfeedhub.utils.RSSScheduler;
+import com.junk.application.discordfeedhub.utils.Utility;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.JTableHeader;
@@ -26,6 +28,7 @@ public class DataPanel extends javax.swing.JPanel {
         this.parent = frame;
         initComponentsVisual();
         loadSources();
+        buttonRun.setText(getRunButtonText());
     }
     
     public String getStatusText() {
@@ -56,11 +59,11 @@ public class DataPanel extends javax.swing.JPanel {
 
         buttonUpdate = new javax.swing.JButton();
         buttonNew = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollPaneTable = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
-        labelStatus = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        buttonRun = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
+        labelStatus = new javax.swing.JLabel();
 
         buttonUpdate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         buttonUpdate.setText("Update");
@@ -75,59 +78,62 @@ public class DataPanel extends javax.swing.JPanel {
         dataTable.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         dataTable.setModel(model);
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(dataTable);
+        scrollPaneTable.setViewportView(dataTable);
 
-        labelStatus.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        labelStatus.setText(getStatusText());
-
-        jButton3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jButton3.setText("Run");
+        buttonRun.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonRun.setText(getRunButtonText());
+        buttonRun.addActionListener(this::buttonRunActionPerformed);
 
         buttonDelete.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         buttonDelete.setText("Delete");
         buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         buttonDelete.addActionListener(this::buttonDeleteActionPerformed);
 
+        labelStatus.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        labelStatus.setText(getStatusText());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addGap(10, 10, 10)
+                        .addContainerGap(274, Short.MAX_VALUE)
+                        .addComponent(buttonRun)
+                        .addGap(5, 5, 5)
                         .addComponent(buttonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addGap(5, 5, 5)
                         .addComponent(buttonUpdate)
-                        .addGap(10, 10, 10)
+                        .addGap(5, 5, 5)
                         .addComponent(buttonDelete))
-                    .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollPaneTable)
+                            .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(5, 5, 5))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonUpdate, jButton3});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonRun, buttonUpdate});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
+                    .addComponent(buttonRun)
                     .addComponent(buttonDelete)
                     .addComponent(buttonNew)
                     .addComponent(buttonUpdate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                .addGap(10, 10, 10)
-                .addComponent(labelStatus)
-                .addGap(10, 10, 10))
+                .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonUpdate, jButton3});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonRun, buttonUpdate});
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -156,19 +162,32 @@ public class DataPanel extends javax.swing.JPanel {
             if (option == JOptionPane.YES_OPTION) {
                 DatabaseStatementStatus status = DatabaseManager.deleteRssSource(id);
                 loadSources();
-            } 
+            }
         } catch (IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
+    private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
+        if (Utility.getScheduler().isStarted()) {
+            Utility.getScheduler().shutdown(labelStatus);
+        } else {
+            Utility.getScheduler().start(labelStatus);
+        }
+        buttonRun.setText(getRunButtonText());
+    }//GEN-LAST:event_buttonRunActionPerformed
+    
+    public String getRunButtonText() {
+        return Utility.getScheduler().isStarted() ? "Stop" : "Start";
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonNew;
+    private javax.swing.JButton buttonRun;
     private javax.swing.JButton buttonUpdate;
     private javax.swing.JTable dataTable;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelStatus;
+    private javax.swing.JScrollPane scrollPaneTable;
     // End of variables declaration//GEN-END:variables
 }

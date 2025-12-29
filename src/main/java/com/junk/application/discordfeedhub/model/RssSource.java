@@ -4,7 +4,7 @@ package com.junk.application.discordfeedhub.model;
  *
  * @author elmerhd
  */
-public class RssSource {
+public class RSSSource {
     
     private int id;
     private String title;
@@ -13,7 +13,7 @@ public class RssSource {
     private String discordWebhookUrl;
     private boolean enabled;
 
-    public RssSource(int id, String title, String websiteUrl, String rssUrl, String discordWebhookUrl, boolean isEnabled) {
+    public RSSSource(int id, String title, String websiteUrl, String rssUrl, String discordWebhookUrl, boolean isEnabled) {
         this.id = id;
         this.title = title;
         this.websiteUrl = websiteUrl;

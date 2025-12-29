@@ -1,6 +1,6 @@
 package com.junk.application.discordfeedhub.panel;
 
-import com.junk.application.discordfeedhub.model.RssSource;
+import com.junk.application.discordfeedhub.model.RSSSource;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.utils.DatabaseStatementStatus;
 import com.junk.application.discordfeedhub.utils.ExtendedPanelModel;
@@ -49,7 +49,7 @@ public class ResourcePanel extends ExtendedPanelModel {
     }
     
     public void setFieldValues(int id) {
-        RssSource rssSource = DatabaseManager.getRssResourceById(id);
+        RSSSource rssSource = DatabaseManager.getRssResourceById(id);
         textTitle.setText(rssSource.getTitle());
         textWebsiteUrl.setText(rssSource.getWebsiteUrl());
         textRssUrl.setText(rssSource.getRssUrl());

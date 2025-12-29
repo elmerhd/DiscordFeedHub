@@ -1,12 +1,13 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RssSource;
+import com.junk.application.discordfeedhub.model.RSSSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class DatabaseManager {
     }
     
     
-    public static RssSource getRssResourceById(int id) {
+    public static RSSSource getRssResourceById(int id) {
         String getRssSourceSql = """
             SELECT id, 
                 title, 
@@ -74,7 +75,7 @@ public class DatabaseManager {
 
             try (ResultSet rs = countPs.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
-                    return new RssSource(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6) == 1 ? true : false);
+                    return new RSSSource(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6) == 1 ? true : false);
                 }
             }
 
@@ -84,7 +85,31 @@ public class DatabaseManager {
         return null;
     }
     
-    public static DatabaseStatementStatus saveNewResource(String title, String websiteURL, String rssUrl, String discordWebhookUrl) {
+    public static boolean isPosted(int sourceId, String itemLink) {
+        String countSql = """
+            SELECT id
+            FROM posted_item
+            WHERE rss_source_id = ? AND item_link = ?
+        """;
+        try (Connection conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(countSql)) {
+
+            ps.setInt(1, sourceId);
+            ps.setString(2, itemLink);
+            
+            return ps.executeQuery().next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public static DatabaseStatementStatus saveNewResource(
+            String title, 
+            String websiteURL, 
+            String rssUrl, 
+            String discordWebhookUrl) {
         
         String countSql = """
             SELECT COUNT(*)
@@ -170,6 +195,25 @@ public class DatabaseManager {
         }
     }
     
+    public static void markAsPosted(int sourceId, String guid, String itemLink) {
+        String sql = """
+            INSERT OR IGNORE INTO posted_item
+            (rss_source_id, item_guid, item_link)
+            VALUES (?, ?, ?)
+        """;
+
+        try (Connection c = getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, sourceId);
+            ps.setString(2, guid);
+            ps.setString(3, itemLink);
+            ps.executeUpdate();
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
+        }
+    }
+    
     public static DatabaseStatementStatus deleteRssSource(int id) {
         String sql = "DELETE FROM rss_source WHERE id = ?";
 
@@ -191,8 +235,13 @@ public class DatabaseManager {
         }
     }
     
-    public static List<RssSource> loadSources() {
-        List<RssSource> list = new ArrayList<>();
+    public static List<RSSSource> loadSources() {
+        return loadSources(false);
+    }
+    
+    public static List<RSSSource> loadSources(boolean enabledOnly) {
+        List<RSSSource> list = new ArrayList<>();
+        
         String sql = """
             SELECT id,
                 title,
@@ -202,13 +251,16 @@ public class DatabaseManager {
                 enabled 
             FROM rss_source
         """;
-
+        if (enabledOnly) {
+            sql += " WHERE enabled=true";
+        }
+        
         try (Connection c = getConnection();
              Statement s = c.createStatement();
              ResultSet rs = s.executeQuery(sql)) {
 
             while (rs.next()) {
-                RssSource r = new RssSource(
+                RSSSource r = new RSSSource(
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("website_url"),

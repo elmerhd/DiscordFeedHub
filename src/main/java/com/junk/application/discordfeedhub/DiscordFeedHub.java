@@ -54,19 +54,9 @@ public class DiscordFeedHub {
             new ApplicationTaskbar(macImageLogo).setUpTaskBar();
             
             if (args.length != 0 && args[0] != null && args[0] == "--no-ui") {
-            
+                
             } else {
                 mainUI.setVisible(true);
-//                RSSReader rSSReader = new RSSReader("https://techcrunch.com/feed/");
-//                
-//                for (SyndEntry entry : rSSReader.getList()) {
-//                    System.out.println("title : " + entry.getTitle());
-//                    System.out.println("link : " + entry.getLink());
-//                    System.out.println("uri : " + entry.getUri());
-//                    System.out.println("author : " + entry.getAuthor());
-//                    System.out.println("category : " +entry.getCategories());
-//                    break;
-//                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);

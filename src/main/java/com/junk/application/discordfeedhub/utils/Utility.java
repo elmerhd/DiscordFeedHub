@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class Utility {
     
+    private static RSSScheduler scheduler = new RSSScheduler();
+    
     public static Toolkit getDefaultToolkit() {
         return Toolkit.getDefaultToolkit();
     }
@@ -51,6 +53,10 @@ public class Utility {
         } else {
             JOptionPane.showMessageDialog(extendedPanelModel, databaseStatementStatus.getStatusMessage(), "Status", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public static RSSScheduler getScheduler() {
+        return scheduler;
     }
     
 }
