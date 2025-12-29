@@ -1,6 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RSSSource;
+import com.junk.application.discordfeedhub.model.RSSSource1;
 import com.rometools.rome.feed.synd.SyndEntry;
 import org.json.JSONObject;
 
@@ -11,10 +11,10 @@ import org.json.JSONObject;
 public class DiscordPost {
     private final String webhookUrl;
     private final JSONObject payload;
-    private final RSSSource source;
+    private final RSSSource1 source;
     private final SyndEntry entry;
 
-    public DiscordPost(String webhookUrl, JSONObject payload, RSSSource source, SyndEntry entry) {
+    public DiscordPost(String webhookUrl, JSONObject payload, RSSSource1 source, SyndEntry entry) {
         this.webhookUrl = webhookUrl;
         this.payload = payload;
         this.source = source;
@@ -33,7 +33,7 @@ public class DiscordPost {
         return entry;
     }
 
-    public RSSSource getSource() {
+    public RSSSource1 getSource() {
         return source;
     }
 }

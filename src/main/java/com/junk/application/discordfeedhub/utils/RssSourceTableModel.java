@@ -4,7 +4,7 @@ package com.junk.application.discordfeedhub.utils;
  *
  * @author elmerhd
  */
-import com.junk.application.discordfeedhub.model.RSSSource;
+import com.junk.application.discordfeedhub.model.RSSSource1;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class RssSourceTableModel extends AbstractTableModel {
         "ID", "Title", "Website URL", "RSS URL", "Discord Webhook", "Enabled"
     };
 
-    private List<RSSSource> data = new ArrayList<>();
+    private List<RSSSource1> data = new ArrayList<>();
 
     @Override
     public int getRowCount() {
@@ -38,7 +38,7 @@ public class RssSourceTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        RSSSource r = data.get(row);
+        RSSSource1 r = data.get(row);
 
         return switch (col) {
             case 0 -> r.getId();
@@ -56,12 +56,12 @@ public class RssSourceTableModel extends AbstractTableModel {
         return col == 5 ? Boolean.class : String.class;
     }
 
-    public void setData(List<RSSSource> list) {
+    public void setData(List<RSSSource1> list) {
         this.data = list;
         fireTableDataChanged();
     }
 
-    public RSSSource getAt(int row) {
+    public RSSSource1 getAt(int row) {
         return data.get(row);
     }
 }

@@ -1,7 +1,7 @@
 
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RSSSource;
+import com.junk.application.discordfeedhub.model.RSSSource1;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -19,9 +19,9 @@ import org.json.JSONObject;
  */
 public class RSSReaderTask implements Runnable {
     
-    private RSSSource source;
+    private RSSSource1 source;
     
-    public RSSReaderTask(RSSSource source) {
+    public RSSReaderTask(RSSSource1 source) {
         this.source = source;
     }
     

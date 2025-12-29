@@ -1,6 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.model.RSSSource;
+import com.junk.application.discordfeedhub.model.RSSSource1;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,7 +58,7 @@ public class DatabaseManager {
     }
     
     
-    public static RSSSource getRssResourceById(int id) {
+    public static RSSSource1 getRssResourceById(int id) {
         String getRssSourceSql = """
             SELECT id, 
                 title, 
@@ -75,7 +75,7 @@ public class DatabaseManager {
 
             try (ResultSet rs = countPs.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
-                    return new RSSSource(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6) == 1 ? true : false);
+                    return new RSSSource1(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6) == 1 ? true : false);
                 }
             }
 
@@ -235,12 +235,12 @@ public class DatabaseManager {
         }
     }
     
-    public static List<RSSSource> loadSources() {
+    public static List<RSSSource1> loadSources() {
         return loadSources(false);
     }
     
-    public static List<RSSSource> loadSources(boolean enabledOnly) {
-        List<RSSSource> list = new ArrayList<>();
+    public static List<RSSSource1> loadSources(boolean enabledOnly) {
+        List<RSSSource1> list = new ArrayList<>();
         
         String sql = """
             SELECT id,
@@ -260,7 +260,7 @@ public class DatabaseManager {
              ResultSet rs = s.executeQuery(sql)) {
 
             while (rs.next()) {
-                RSSSource r = new RSSSource(
+                RSSSource1 r = new RSSSource1(
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("website_url"),
