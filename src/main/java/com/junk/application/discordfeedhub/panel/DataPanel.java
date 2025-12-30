@@ -3,9 +3,10 @@ package com.junk.application.discordfeedhub.panel;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.RssSourceTableModel;
-import com.junk.application.discordfeedhub.utils.DatabaseStatementStatus;
-import com.junk.application.discordfeedhub.utils.RSSScheduler;
+import com.junk.application.discordfeedhub.utils.DmlResult;
 import com.junk.application.discordfeedhub.utils.Utility;
+import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.JTableHeader;
@@ -23,7 +24,7 @@ public class DataPanel extends javax.swing.JPanel {
     /**
      * Creates new form DataPanel
      */
-    public DataPanel(JFrame frame) {
+    public DataPanel(JFrame frame) throws SQLException, IOException {
         initComponents();
         this.parent = frame;
         initComponentsVisual();
@@ -44,7 +45,7 @@ public class DataPanel extends javax.swing.JPanel {
         header.setFont(dataTable.getFont());
     }
     
-    public void loadSources() {
+    public void loadSources() throws SQLException, IOException {
         model.setData(DatabaseManager.loadSources());
     }
 
@@ -160,15 +161,24 @@ public class DataPanel extends javax.swing.JPanel {
             String title = (String) dataTable.getValueAt(row, 1);
             int option = JOptionPane.showConfirmDialog(this, "Sure to delete " + title + "?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.YES_OPTION) {
-                DatabaseStatementStatus status = DatabaseManager.deleteRssSource(id);
+                DmlResult dmlResult = DatabaseManager.deleteRssSource(id);
                 loadSources();
             }
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ex) {
+            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException | IOException ex) {
+            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            JOptionPane.showMessageDialog(this, "Unknown Error!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
+        if (model.getRowCount() < 1) {
+            JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (Utility.getScheduler().isStarted()) {
             Utility.getScheduler().shutdown(labelStatus);
         } else {

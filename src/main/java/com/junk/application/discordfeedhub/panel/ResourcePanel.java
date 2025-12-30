@@ -2,9 +2,11 @@ package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.RssSource;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
-import com.junk.application.discordfeedhub.utils.DatabaseStatementStatus;
+import com.junk.application.discordfeedhub.utils.DmlResult;
 import com.junk.application.discordfeedhub.utils.ExtendedPanelModel;
 import com.junk.application.discordfeedhub.utils.Utility;
+import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -213,15 +215,19 @@ public class ResourcePanel extends ExtendedPanelModel {
     }//GEN-LAST:event_buttonCloseActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
-        DatabaseStatementStatus status = null;
+        DmlResult result = null;
         if (validateFieldValues()) {
             if (!isUpdate) {
-                status = DatabaseManager.saveNewResource(textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText());
+                result = DatabaseManager.saveNewResource(textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText());
             } else {
-                status = DatabaseManager.updateRSSSource(id, textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText(), checkboxEnabled.isSelected() ? 1 : 0);
+                result = DatabaseManager.updateRSSSource(id, textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText(), checkboxEnabled.isSelected() ? 1 : 0);
             }
-            Utility.checkStatus(this, status);
-            dataPanel.loadSources();
+            Utility.checkStatus(this, result);
+            try {
+                dataPanel.loadSources();
+            } catch (SQLException | IOException ex) {
+                System.getLogger(ResourcePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "One or More fields is required", "Error", JOptionPane.ERROR_MESSAGE);
         }

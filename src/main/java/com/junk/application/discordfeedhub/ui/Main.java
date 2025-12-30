@@ -4,6 +4,8 @@ import com.junk.application.discordfeedhub.panel.DataPanel;
 import com.junk.application.discordfeedhub.panel.LoadingPanel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.BorderLayout;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -12,29 +14,29 @@ import java.util.Properties;
  */
 public class Main extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main.class.getName());
-    
     private DataPanel dataPanel = null;
     private LoadingPanel loadingPanel = null;
     /**
      * Creates new form Main
      */
-    public Main() {
+    public Main() throws SQLException, IOException, Exception {
         initComponents();
         initializedPanels();
     }
     
     private String getApplicationTitle(){
+            
         try {
             Properties applicationProperty = Utility.getApplicationProperty();
             String applicationName = applicationProperty.getProperty("app.name");
             return applicationName;
-        } catch (Exception e) {
+        } catch (IOException ex) {
+            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             return null;
         }
     }
     
-    private void initializedPanels() {
+    private void initializedPanels() throws SQLException, IOException {
         dataPanel = new DataPanel(this);
         loadingPanel = new LoadingPanel(this);
         mainPanel.add(loadingPanel, BorderLayout.CENTER);
@@ -61,6 +63,7 @@ public class Main extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
 
         setTitle(getApplicationTitle());
+        setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         setIconImage(Utility.getApplicationIconImage());
 
         mainPanel.setLayout(new java.awt.BorderLayout());

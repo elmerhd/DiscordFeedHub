@@ -58,9 +58,8 @@ public class RSSReaderTask implements Runnable {
             
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("RSS error [" + source.getTitle() + "]: " + e.getMessage());
+        } catch (Exception ex) {
+            System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "RSS error [" + source.getTitle() + "]: " + ex.getMessage(), ex);
         }
     }
 }

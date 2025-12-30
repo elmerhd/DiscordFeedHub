@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
  * in every second of time.
  * @author elmerhd
  */
-public class TweenAnimator{
+public class TweenAnimator {
     private TweenManager tweenManager;
     private boolean running = false;
     /**
@@ -59,6 +59,7 @@ public class TweenAnimator{
                         tweenManager.update(delta);
                     });
                 } catch (InterruptedException | InvocationTargetException ex) {
+                    System.getLogger(TweenAnimator.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
 
                 deltaLastMillis = newMillis;

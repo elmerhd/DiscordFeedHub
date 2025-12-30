@@ -32,8 +32,7 @@ public class DiscordWebhookService {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                System.err.println(payload.toString());
-                throw new IOException("Discord webhook failed: " + response.code());
+                System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "Discord webhook failed: " + response.code());
             } else {
                 DatabaseManager.markAsPosted(source.getId(), UUID.randomUUID().toString(), entry.getLink());
             }
