@@ -43,6 +43,10 @@ java -version
 
 ## 📝 TODO
 
+### UI
+- [ ] Add other look and feel
+- [ ] Improve notifications
+
 ### ⏳ Background Monitoring
 - [ ] Periodically check RSS feeds without user interaction  
 - [x] Run checks on a timer or scheduler  
