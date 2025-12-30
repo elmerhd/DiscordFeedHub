@@ -26,14 +26,16 @@ jobs:
         run: mvn -B clean package
 
       - name: Extract branch name
-        id: branch
         run: |
-          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          BRANCH_NAME=${GITHUB_REF##*/}
+          TAG_NAME=v-${BRANCH_NAME}
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create Git tag
         run: |
-          git tag $BRANCH_NAME
-          git push origin $BRANCH_NAME
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
 
       - name: Create GitHub Release
         id: create_release
@@ -41,8 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.BRANCH_NAME }}
-          release_name: ${{ env.BRANCH_NAME }}
+          tag_name: ${{ env.TAG_NAME  }}
+          release_name: ${{ env.TAG_NAME  }}
           draft: false
           prerelease: false
 
@@ -52,6 +54,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/DiscordFeedHub-${{ env.BRANCH_NAME }}-jar-with-dependencies.jar
-          asset_name: DiscordFeedHub-${{ env.BRANCH_NAME }}.jar
+          asset_path: target/DiscordFeedHub-${{ env.TAG_NAME  }}-jar-with-dependencies.jar
+          asset_name: DiscordFeedHub-${{ env.TAG_NAME  }}.jar
           asset_content_type: application/java-archive
