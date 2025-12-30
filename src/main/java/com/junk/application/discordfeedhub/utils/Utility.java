@@ -78,7 +78,6 @@ public class Utility {
             folder
         );
         applicationFolder = appDir.toAbsolutePath().toString();
-        System.out.println("app dir : " + applicationFolder);
         Files.createDirectories(appDir);
     }
     
