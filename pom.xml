@@ -40,6 +40,13 @@
             <version>3.1.1</version>
         </dependency>
         
+        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-extras -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
