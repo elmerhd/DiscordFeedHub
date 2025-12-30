@@ -30,19 +30,31 @@ It’s designed to be **simple, local, and self-hosted** — no external hosting
 
 ---
 
+## ☕ Requirements
+
+- **[Java 25](https://www.oracle.com/java/technologies/javase/jdk25-archive-downloads.html) (or newer)**
+- Internet connection (for RSS feeds & Discord webhooks)
+
+### Verify Java Version
+```bash
+java -version
+```
+---
+
 ## 📝 TODO
 
 ### ⏳ Background Monitoring
-- Periodically check RSS feeds without user interaction  
-- Run checks on a timer or scheduler  
-- Allow start/stop monitoring from the UI  
+- [ ] Periodically check RSS feeds without user interaction  
+- [x] Run checks on a timer or scheduler  
+- [x] Allow start/stop monitoring from the UI
+- [ ] Add Configuration settings for scheduler
 
 ### 🔔 Webhook Enhancements
-- Improve Discord embed formatting  
-- Add support for rich embeds (author, footer, thumbnail)  
-- Optional mentions (e.g. `@everyone`, role pings)  
+- [ ] Improve Discord embed formatting  
+- [ ] Add support for rich embeds (author, footer, thumbnail)  
+- [ ] Optional mentions (e.g. `@everyone`, role pings)  
 
 ### 🧠 Improved Duplicate Checking
-- Track last published date or GUID per feed  
-- Store last sent item in the database  
-- Prevent reposting old items after application restart  
+- [x] Track last published date or GUID per feed  
+- [x] Store last sent item in the database  
+- [x] Prevent reposting old items after application restart
