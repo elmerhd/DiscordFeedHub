@@ -60,7 +60,7 @@ public class Utility {
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
         if (dmlResult.isSuccess()) {
-            JOptionPane.showMessageDialog(extendedPanelModel, dmlResult.message(), "Status", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(extendedPanelModel, "Success!", "Status", JOptionPane.INFORMATION_MESSAGE);
             extendedPanelModel.closeParentDialog();
         } else {
             JOptionPane.showMessageDialog(extendedPanelModel, dmlResult.message(), "Status", JOptionPane.ERROR_MESSAGE);
