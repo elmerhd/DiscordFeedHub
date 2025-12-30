@@ -55,6 +55,7 @@ public class Main extends javax.swing.JFrame {
     public void setUpMenubar() {
         FlatButton settingsButton = new FlatButton();
         settingsButton.setIcon(Utility.getSettingIcon());
+        settingsButton.setEnabled(false);
         settingsButton.setButtonType( FlatButton.ButtonType.toolBarButton );
         settingsButton.setFocusable( false );
         settingsButton.addActionListener(new ActionListener() {
