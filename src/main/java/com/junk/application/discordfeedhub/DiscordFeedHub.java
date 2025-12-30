@@ -6,19 +6,10 @@ import com.junk.application.discordfeedhub.utils.ApplicationTaskbar;
 import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
-import java.awt.AWTException;
-import java.awt.Font;
 import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.Properties;
-import javax.swing.JOptionPane;
 
 /**
  *
