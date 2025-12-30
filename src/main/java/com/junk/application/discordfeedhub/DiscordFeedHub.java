@@ -57,7 +57,7 @@ public class DiscordFeedHub {
             new ApplicationTaskbar(macImageLogo).setUpTaskBar();
             
             if (args.length != 0 && args[0] != null && args[0] == "--no-ui") {
-                
+                //todo
             } else {
                 mainUI.setVisible(true);
             }
