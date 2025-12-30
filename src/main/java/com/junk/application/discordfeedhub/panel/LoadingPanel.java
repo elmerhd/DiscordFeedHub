@@ -9,6 +9,7 @@ import com.junk.application.discordfeedhub.ui.Main;
 import com.junk.application.discordfeedhub.utils.ComponentAccessor;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import java.awt.Dimension;
+import java.time.Duration;
 import javax.swing.JPanel;
 
 /**
@@ -44,6 +45,11 @@ public class LoadingPanel extends javax.swing.JPanel {
         TweenCallback animationDone = new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> bt) {
+                try {
+                    Thread.sleep(Duration.ofSeconds(1));
+                } catch (InterruptedException ex) {
+                    System.getLogger(LoadingPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
                 mainUI.showDataPanel();
             }
         };
@@ -54,9 +60,11 @@ public class LoadingPanel extends javax.swing.JPanel {
             .end()
             .delay(2)
             // Fast drop
-            .push(Tween.to(labelAppLogo, ComponentAccessor.POSITION_XY, 1.5f)
-                .target(appLogoCenterX, appLogoCenterY)
-                .ease(Bounce.OUT))
+            .beginSequence()
+                .push(Tween.to(labelAppLogo, ComponentAccessor.POSITION_XY, 1.5f)
+                    .target(appLogoCenterX, appLogoCenterY)
+                    .ease(Bounce.OUT))
+            .end()
             .setCallback(animationDone)
             .start(TweenAnimationManager.getTweenManager());
 
