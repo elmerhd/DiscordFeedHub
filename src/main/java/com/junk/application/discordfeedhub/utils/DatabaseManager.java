@@ -1,15 +1,18 @@
 package com.junk.application.discordfeedhub.utils;
 
 import com.junk.application.discordfeedhub.model.RssSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.sql.Statement;
-import java.time.Instant;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  *
@@ -17,10 +20,10 @@ import java.util.List;
  */
 public class DatabaseManager {
     
-    private static final String dbConnectionUrl = "jdbc:sqlite:discordfeedhub.db";
-    
     static {
-        try (Connection conn = DriverManager.getConnection(dbConnectionUrl)) {
+        
+        try {
+            Connection conn = DriverManager.getConnection(getDatabaseConnectionURL());
             String sqlRSSSource = """
                 CREATE TABLE IF NOT EXISTS rss_source (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,15 +49,25 @@ public class DatabaseManager {
             """;
             conn.createStatement().execute(sqlRSSSource);
             conn.createStatement().execute(sqlPostedItem);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (IOException | SQLException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
     
-    
+    private static String getDatabaseConnectionURL() throws IOException {
+        Properties applicationProperty = Utility.getApplicationProperty();
+        String applicationName = applicationProperty.getProperty("app.name");
+        String template = "jdbc:sqlite:{0}\\{1}.db";
+        String result = MessageFormat.format(
+                template,
+                Utility.getApplicationFolder(),
+                applicationName.toLowerCase()
+        );
+        return result;
+    }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(dbConnectionUrl);
+    public static Connection getConnection() throws SQLException, IOException {
+        return DriverManager.getConnection(getDatabaseConnectionURL());
     }
     
     
@@ -78,11 +91,11 @@ public class DatabaseManager {
                     return new RssSource(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6) == 1 ? true : false);
                 }
             }
-
-        } catch (SQLException e) {
+            return null;
+        } catch (SQLException | IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             return null;
         }
-        return null;
     }
     
     public static boolean isPosted(int sourceId, String itemLink) {
@@ -99,13 +112,13 @@ public class DatabaseManager {
             
             return ps.executeQuery().next();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             return false;
         }
     }
     
-    public static DatabaseStatementStatus saveNewResource(
+    public static DmlResult saveNewResource(
             String title, 
             String websiteURL, 
             String rssUrl, 
@@ -131,9 +144,10 @@ public class DatabaseManager {
 
             try (ResultSet rs = countPs.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
-                    return new DatabaseStatementStatus(
-                        false,
-                        "RSS URL & Discord Webhook URL already exist"
+                    return DmlResult.failure(
+                            DmlStatus.NO_ROWS_AFFECTED,
+                            "RSS URL & Discord Webhook URL already exist",
+                            null
                     );
                 }
             }
@@ -143,18 +157,44 @@ public class DatabaseManager {
                 insertPs.setString(2, websiteURL);
                 insertPs.setString(3, rssUrl);
                 insertPs.setString(4, discordWebhookUrl);
+                
+                int affectedRows = insertPs.executeUpdate();
 
-                insertPs.executeUpdate();
+                if (affectedRows == 0) {
+                    return DmlResult.failure(
+                            DmlStatus.NO_ROWS_AFFECTED,
+                            "No rows were inserted",
+                            null
+                    );
+                }
+                return DmlResult.success(affectedRows);
             }
 
-           return new DatabaseStatementStatus(true, "Successful");
-
-        } catch (SQLException e) {
-            return new DatabaseStatementStatus(false, e.getMessage());
+        } catch (SQLTimeoutException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.TIMEOUT,
+                    "Query execution timed out",
+                    ex
+            );
+        } catch (SQLException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
+        } catch (IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
         }
     }
     
-    public static DatabaseStatementStatus updateRSSSource(
+    public static DmlResult updateRSSSource(
             int id,
             String title,
             String websiteUrl,
@@ -183,19 +223,43 @@ public class DatabaseManager {
             ps.setInt(5, enabled);
             ps.setInt(6, id);
 
-            int affected = ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
 
-            if (affected == 0) {
-                return new DatabaseStatementStatus(false, "No record updated");
+            if (affectedRows == 0) {
+                return DmlResult.failure(
+                        DmlStatus.NO_ROWS_AFFECTED,
+                        "No rows were updated",
+                        null
+                );
             }
-            return new DatabaseStatementStatus(true, "Updated successfully");
 
-        } catch (SQLException e) {
-            return new DatabaseStatementStatus(false, e.getMessage());
+            return DmlResult.success(affectedRows);
+
+        } catch (SQLTimeoutException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.TIMEOUT,
+                    "Query execution timed out",
+                    ex
+            );
+        } catch (SQLException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
+        } catch (IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
         }
     }
     
-    public static void markAsPosted(int sourceId, String guid, String itemLink) {
+    public static DmlResult markAsPosted(int sourceId, String guid, String itemLink) {
         String sql = """
             INSERT OR IGNORE INTO posted_item
             (rss_source_id, item_guid, item_link)
@@ -208,13 +272,43 @@ public class DatabaseManager {
             ps.setInt(1, sourceId);
             ps.setString(2, guid);
             ps.setString(3, itemLink);
-            ps.executeUpdate();
-        } catch (SQLException ignored) {
-            ignored.printStackTrace();
+            int affectedRows = ps.executeUpdate();
+            
+            if (affectedRows == 0) {
+                return DmlResult.failure(
+                        DmlStatus.NO_ROWS_AFFECTED,
+                        "No rows were updated",
+                        null
+                );
+            }
+
+            return DmlResult.success(affectedRows);
+            
+        } catch (SQLTimeoutException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.TIMEOUT,
+                    "Query execution timed out",
+                    ex
+            );
+        } catch (SQLException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
+        } catch (IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
         }
     }
     
-    public static DatabaseStatementStatus deleteRssSource(int id) {
+    public static DmlResult deleteRssSource(int id) {
         String sql = "DELETE FROM rss_source WHERE id = ?";
 
         try (Connection conn = getConnection();
@@ -225,21 +319,43 @@ public class DatabaseManager {
             int affectedRows = ps.executeUpdate();
 
             if (affectedRows > 0) {
-                return new DatabaseStatementStatus(true, "Deleted successfully");
-            } else {
-                return new DatabaseStatementStatus(false, "Record not found");
+                return DmlResult.failure(
+                        DmlStatus.NO_ROWS_AFFECTED,
+                        "No rows were affected",
+                        null);
             }
+            
+            return DmlResult.success(affectedRows);
 
-        } catch (SQLException e) {
-            return new DatabaseStatementStatus(false, e.getMessage());
+        } catch (SQLTimeoutException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.TIMEOUT,
+                    "Query execution timed out",
+                    ex
+            );
+        } catch (SQLException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                    DmlStatus.UNKNOWN_ERROR,
+                    ex.getMessage(),
+                    ex
+            );
+        } catch (IOException ex) {
+            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return DmlResult.failure(
+                DmlStatus.UNKNOWN_ERROR,
+                ex.getMessage(),
+                ex
+            );
         }
     }
     
-    public static List<RssSource> loadSources() {
+    public static List<RssSource> loadSources() throws SQLException, IOException {
         return loadSources(false);
     }
     
-    public static List<RssSource> loadSources(boolean enabledOnly) {
+    public static List<RssSource> loadSources(boolean enabledOnly) throws SQLException, IOException {
         List<RssSource> list = new ArrayList<>();
         
         String sql = """
@@ -251,27 +367,24 @@ public class DatabaseManager {
                 enabled 
             FROM rss_source
         """;
+        
         if (enabledOnly) {
             sql += " WHERE enabled=true";
         }
         
-        try (Connection c = getConnection();
-             Statement s = c.createStatement();
-             ResultSet rs = s.executeQuery(sql)) {
+        Connection c = getConnection();
+        Statement s = c.createStatement();
+        ResultSet rs = s.executeQuery(sql);
 
-            while (rs.next()) {
-                RssSource r = new RssSource(
-                    rs.getInt("id"),
-                    rs.getString("title"),
-                    rs.getString("website_url"),
-                    rs.getString("rss_url"),
-                    rs.getString("discord_webhook_url"),
-                    rs.getInt("enabled") == 1 ? true : false);
-                list.add(r);
-            }
-
-        } catch (SQLException e) {
-            return list;
+        while (rs.next()) {
+            RssSource r = new RssSource(
+                rs.getInt("id"),
+                rs.getString("title"),
+                rs.getString("website_url"),
+                rs.getString("rss_url"),
+                rs.getString("discord_webhook_url"),
+                rs.getInt("enabled") == 1 ? true : false);
+            list.add(r);
         }
         return list;
     }

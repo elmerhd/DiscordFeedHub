@@ -1,6 +1,8 @@
 package com.junk.application.discordfeedhub.utils;
 
 import com.junk.application.discordfeedhub.model.RssSource;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,14 +41,20 @@ public class RSSScheduler {
         }
         
         scheduler.scheduleAtFixedRate(
-            () -> runCycle(statusLabel),
+            () -> {
+            try {
+                runCycle(statusLabel);
+            } catch (SQLException | IOException ex) {
+                System.getLogger(RSSScheduler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        },
             0,
             INTERVAL_SECONDS,
             TimeUnit.SECONDS
         );
     }
 
-    private void runCycle(JLabel statusLabel) {
+    private void runCycle(JLabel statusLabel) throws SQLException, IOException {
         retryCount++;
         System.out.println("running retries : " + retryCount);
         if (statusLabel != null) {

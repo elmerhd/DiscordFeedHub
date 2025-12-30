@@ -12,8 +12,7 @@ public final class DiscordPostQueue {
 
     private static final int INTERVAL_SECONDS = 5;
 
-    private static final BlockingQueue<DiscordPost> queue =
-            new LinkedBlockingQueue<>();
+    private static final BlockingQueue<DiscordPost> queue = new LinkedBlockingQueue<>();
 
     private static ScheduledExecutorService scheduler;
     private static final AtomicBoolean running = new AtomicBoolean(false);
@@ -73,8 +72,8 @@ public final class DiscordPostQueue {
                     post.getEntry()
             );
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            System.getLogger(DiscordPostQueue.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 

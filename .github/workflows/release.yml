@@ -1,36 +1,57 @@
 name: release
 
 on:
-  pull_request:
+  push:
     branches:
       - master
-    types:
-      - closed
+
+permissions:
+  contents: write
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java 25
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '25'
+          java-version: 25
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Build JAR with Maven
+        run: mvn -B clean package
+
+      - name: Extract branch name
+        id: branch
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Create Git tag
+        run: |
+          git tag $BRANCH_NAME
+          git push origin $BRANCH_NAME
 
       - name: Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.pull_request.head.ref }}
-          release_name: ${{ github.event.pull_request.head.ref }}
+          tag_name: ${{ env.BRANCH_NAME }}
+          release_name: ${{ env.BRANCH_NAME }}
           draft: false
           prerelease: false
+
+      - name: Upload JAR to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/DiscordFeedHub-${{ env.BRANCH_NAME }}-jar-with-dependencies.jar
+          asset_name: DiscordFeedHub-${{ env.BRANCH_NAME }}.jar
+          asset_content_type: application/java-archive

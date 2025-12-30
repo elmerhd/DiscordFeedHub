@@ -7,11 +7,16 @@ import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.AWTException;
+import java.awt.Font;
 import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -21,19 +26,19 @@ import javax.swing.JOptionPane;
  */
 public class DiscordFeedHub {
 
-    public static void main(String[] args) throws InterruptedException, IOException, URISyntaxException, AWTException {
+    public static void main(String[] args){
         new DiscordFeedHub().launchApplication(args);
     }
     
-    public void launchApplication(String [] args) throws IOException, URISyntaxException, AWTException{
+    public void launchApplication(String [] args){
         try {
-            
+            Properties applicationProperty = Utility.getApplicationProperty();
             FlatLightLaf.setup();
             TweenAnimationManager.registerTweenAccessors();
+            Utility.createApplicationFolder(applicationProperty);
+            Utility.setupLogger();
             
             Main mainUI = new Main();
-            
-            Properties applicationProperty = Utility.getApplicationProperty();
             String applicationName = applicationProperty.getProperty("app.name");
             // setting system properties for mac os
             System.setProperty( "apple.laf.useScreenMenuBar", "true");
@@ -45,11 +50,18 @@ public class DiscordFeedHub {
             Image systemTrayImageLogo = defaultToolkit.getImage(Utility.getSystemTrayImageURL());
             
             // setup tray icon
-            new ApplicationTray(applicationName, systemTrayImageLogo, (ActionEvent e) -> {
-                if (!mainUI.isVisible()) {
-                    mainUI.setVisible(true);
-                }
-            }).setUpTray();
+            
+            new ApplicationTray(
+                    applicationName, 
+                    systemTrayImageLogo, 
+                    (ActionEvent e) -> {
+                        if (!mainUI.isVisible()) {
+                            mainUI.setVisible(true);
+                        }
+                    },
+                    Utility.getTrayPopupMenu(mainUI)
+            ).setUpTray();
+            
             // setup task bar for mac os
             new ApplicationTaskbar(macImageLogo).setUpTaskBar();
             
@@ -58,9 +70,8 @@ public class DiscordFeedHub {
             } else {
                 mainUI.setVisible(true);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        } catch (Exception ex) {
+            System.getLogger(DiscordFeedHub.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    
 }
