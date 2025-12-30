@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.junk.application.discordfeedhub.DiscordFeedHub;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -56,6 +57,10 @@ public class Utility {
     
     public static URL getSystemTrayImageURL() throws URISyntaxException {
         return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-32.png");
+    }
+    
+    public static FlatSVGIcon getSettingIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/gear.svg");
     }
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {

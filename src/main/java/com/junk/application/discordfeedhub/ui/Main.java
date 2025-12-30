@@ -1,13 +1,20 @@
 package com.junk.application.discordfeedhub.ui;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.extras.components.FlatButton;
 import com.junk.application.discordfeedhub.panel.DataPanel;
 import com.junk.application.discordfeedhub.panel.LoadingPanel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Properties;
+import javax.swing.Box;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -23,6 +30,7 @@ public class Main extends javax.swing.JFrame {
     public Main() throws SQLException, IOException, Exception {
         initComponents();
         initializedPanels();
+        setUpMenubar();
     }
     
     private String getApplicationTitle(){
@@ -42,6 +50,22 @@ public class Main extends javax.swing.JFrame {
             System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             return null;
         }
+    }
+    
+    public void setUpMenubar() {
+        FlatButton settingsButton = new FlatButton();
+        settingsButton.setIcon(Utility.getSettingIcon());
+        settingsButton.setButtonType( FlatButton.ButtonType.toolBarButton );
+        settingsButton.setFocusable( false );
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // todo
+            }
+        });
+        menuBarMenu.add( Box.createGlue() );
+        menuBarMenu.add( settingsButton);
+        UIManager.put( "MenuItem.selectionType", "underline");
     }
     
     private void initializedPanels() throws SQLException, IOException {
@@ -72,6 +96,11 @@ public class Main extends javax.swing.JFrame {
         menuBarMenu = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemClose = new javax.swing.JMenuItem();
+        menuView = new javax.swing.JMenu();
+        menuItemViewLogs = new javax.swing.JMenuItem();
+        menuHelp = new javax.swing.JMenu();
+        menuItemCheckUpdates = new javax.swing.JMenuItem();
+        menuItemAbout = new javax.swing.JMenuItem();
 
         setTitle(getApplicationTitle());
         setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -80,13 +109,41 @@ public class Main extends javax.swing.JFrame {
         mainPanel.setLayout(new java.awt.BorderLayout());
 
         menuFile.setText("File");
+        menuFile.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         menuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItemClose.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         menuItemClose.setText("Close");
         menuItemClose.addActionListener(this::menuItemCloseActionPerformed);
         menuFile.add(menuItemClose);
 
         menuBarMenu.add(menuFile);
+
+        menuView.setText("View");
+        menuView.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+
+        menuItemViewLogs.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        menuItemViewLogs.setText("View Logs");
+        menuItemViewLogs.setEnabled(false);
+        menuView.add(menuItemViewLogs);
+
+        menuBarMenu.add(menuView);
+
+        menuHelp.setText("Help");
+        menuHelp.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+
+        menuItemCheckUpdates.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        menuItemCheckUpdates.setMnemonic('U');
+        menuItemCheckUpdates.setText("Check for Updates");
+        menuItemCheckUpdates.setEnabled(false);
+        menuHelp.add(menuItemCheckUpdates);
+
+        menuItemAbout.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        menuItemAbout.setText("About");
+        menuItemAbout.setEnabled(false);
+        menuHelp.add(menuItemAbout);
+
+        menuBarMenu.add(menuHelp);
 
         setJMenuBar(menuBarMenu);
 
@@ -103,7 +160,7 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -119,6 +176,11 @@ public class Main extends javax.swing.JFrame {
     public javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBarMenu;
     private javax.swing.JMenu menuFile;
+    private javax.swing.JMenu menuHelp;
+    private javax.swing.JMenuItem menuItemAbout;
+    private javax.swing.JMenuItem menuItemCheckUpdates;
     private javax.swing.JMenuItem menuItemClose;
+    private javax.swing.JMenuItem menuItemViewLogs;
+    private javax.swing.JMenu menuView;
     // End of variables declaration//GEN-END:variables
 }
