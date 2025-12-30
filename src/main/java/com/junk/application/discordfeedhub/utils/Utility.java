@@ -55,7 +55,7 @@ public class Utility {
     }
     
     public static URL getSystemTrayImageURL() throws URISyntaxException {
-        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-64.png");
+        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-32.png");
     }
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
