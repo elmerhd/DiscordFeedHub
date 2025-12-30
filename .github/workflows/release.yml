@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 25
         uses: actions/setup-java@v4
@@ -22,20 +21,18 @@ jobs:
           distribution: temurin
           java-version: 25
 
-      - name: Build JAR with Maven
+      - name: Build JAR
         run: mvn -B clean package
 
-      - name: Extract branch name
+      - name: Extract version from pom.xml
         run: |
-          BRANCH_NAME=${GITHUB_REF##*/}
-          TAG_NAME=v-${BRANCH_NAME}
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create Git tag
         run: |
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+          git tag v$VERSION
+          git push origin v$VERSION
 
       - name: Create GitHub Release
         id: create_release
@@ -43,17 +40,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.TAG_NAME  }}
-          release_name: ${{ env.TAG_NAME  }}
+          tag_name: v${{ env.VERSION }}
+          release_name: v${{ env.VERSION }}
           draft: false
           prerelease: false
 
-      - name: Upload JAR to Release
+      - name: Upload JAR
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/DiscordFeedHub-${{ env.TAG_NAME  }}-jar-with-dependencies.jar
-          asset_name: DiscordFeedHub-${{ env.TAG_NAME  }}.jar
+          asset_path: target/DiscordFeedHub-${{ env.VERSION }}-jar-with-dependencies.jar
+          asset_name: DiscordFeedHub-${{ env.VERSION }}.jar
           asset_content_type: application/java-archive
