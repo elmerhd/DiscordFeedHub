@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -24,7 +26,7 @@ public class DiscordFeedHub {
     public void launchApplication(String [] args){
         try {
             Properties applicationProperty = Utility.getApplicationProperty();
-            FlatLightLaf.setup();
+            UIManager.setLookAndFeel( new FlatLightLaf() );
             TweenAnimationManager.registerTweenAccessors();
             Utility.createApplicationFolder(applicationProperty);
             Utility.setupLogger();

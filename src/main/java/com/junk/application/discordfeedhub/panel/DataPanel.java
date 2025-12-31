@@ -65,7 +65,6 @@ public class DataPanel extends javax.swing.JPanel {
         dataTable = new javax.swing.JTable();
         labelStatus = new javax.swing.JLabel();
         panelToolbar = new javax.swing.JPanel();
-        buttonDelete = new javax.swing.JButton();
         buttonUpdate = new javax.swing.JButton();
         buttonNew = new javax.swing.JButton();
         buttonRun = new javax.swing.JButton();
@@ -80,14 +79,6 @@ public class DataPanel extends javax.swing.JPanel {
 
         panelToolbar.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         panelToolbar.setLayout(new javax.swing.BoxLayout(panelToolbar, javax.swing.BoxLayout.LINE_AXIS));
-
-        buttonDelete.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonDelete.setText("Delete");
-        buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonDelete.addActionListener(this::buttonDeleteActionPerformed);
-        panelToolbar.add(buttonDelete);
-        panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
 
         buttonUpdate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         buttonUpdate.setText("Update");
@@ -159,25 +150,6 @@ public class DataPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
-    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        try {
-            int row = dataTable.getSelectedRow();
-            int id = (int) dataTable.getValueAt(row, 0);
-            String title = (String) dataTable.getValueAt(row, 1);
-            int option = JOptionPane.showConfirmDialog(this, "Sure to delete " + title + "?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (option == JOptionPane.YES_OPTION) {
-                DmlResult dmlResult = DatabaseManager.deleteRssSource(id);
-                loadSources();
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException | IOException ex) {
-            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            JOptionPane.showMessageDialog(this, "Unknown Error!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_buttonDeleteActionPerformed
-
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
         if (model.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -197,7 +169,6 @@ public class DataPanel extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonNew;
     private javax.swing.JButton buttonRun;
     private javax.swing.JButton buttonUpdate;
