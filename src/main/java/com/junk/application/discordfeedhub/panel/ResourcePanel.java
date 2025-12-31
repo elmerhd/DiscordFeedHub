@@ -44,6 +44,10 @@ public class ResourcePanel extends ExtendedPanelModel {
         textWebsiteUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelWebsiteUrl));
         textRssUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelRssUrl));
         textDiscordWebhook.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelDiscordWebhook));
+        textTitle.putClientProperty("JTextField.showClearButton", true);
+        textWebsiteUrl.putClientProperty("JTextField.showClearButton", true);
+        textRssUrl.putClientProperty("JTextField.showClearButton", true);
+        textDiscordWebhook.putClientProperty("JTextField.showClearButton", true);
     }
     
     private String sanitizeLabelPlaceHolder(JLabel label) {
