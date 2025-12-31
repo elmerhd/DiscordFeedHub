@@ -17,14 +17,6 @@
             <artifactId>flatlaf</artifactId>
             <version>3.1.1</version>
         </dependency>
-
-        
-        <!-- https://mvnrepository.com/artifact/org.mini2Dx/universal-tween-engine -->
-        <dependency>
-            <groupId>org.mini2Dx</groupId>
-            <artifactId>universal-tween-engine</artifactId>
-            <version>6.3.3</version>
-        </dependency>
         
         <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-intellij-themes -->
         <dependency>
@@ -33,13 +25,6 @@
             <version>3.1.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-extras -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>flatlaf-extras</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        
         <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-extras -->
         <dependency>
             <groupId>com.formdev</groupId>
