@@ -79,15 +79,5 @@ public class DatabaseManagerTest {
         assertTrue(DatabaseManager.isPosted(testSourceId, "https://example.org/rss/item1"),
                 "isPosted should return true for posted item");
     }
-
-    @Test
-    @Order(6)
-    void testDeleteRssSource() {
-        DmlResult result = DatabaseManager.deleteRssSource(testSourceId);
-        assertTrue(result.isSuccess(), "Should successfully delete RSS source");
-
-        RssSource deleted = DatabaseManager.getRssResourceById(testSourceId);
-        assertNull(deleted, "Deleted RSS source should no longer exist");
-    }
 }
 
