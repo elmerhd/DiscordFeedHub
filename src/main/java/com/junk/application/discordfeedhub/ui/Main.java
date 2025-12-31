@@ -2,8 +2,11 @@ package com.junk.application.discordfeedhub.ui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatButton;
+import com.junk.application.discordfeedhub.panel.AboutPanel;
 import com.junk.application.discordfeedhub.panel.DataPanel;
 import com.junk.application.discordfeedhub.panel.LoadingPanel;
+import com.junk.application.discordfeedhub.panel.ResourcePanel;
+import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -141,7 +144,7 @@ public class Main extends javax.swing.JFrame {
 
         menuItemAbout.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         menuItemAbout.setText("About");
-        menuItemAbout.setEnabled(false);
+        menuItemAbout.addActionListener(this::menuItemAboutActionPerformed);
         menuHelp.add(menuItemAbout);
 
         menuBarMenu.add(menuHelp);
@@ -172,6 +175,16 @@ public class Main extends javax.swing.JFrame {
     private void menuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCloseActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_menuItemCloseActionPerformed
+
+    private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
+        ExtendedDialog extendedDialog;
+        try {
+            extendedDialog = new ExtendedDialog(this, "About", new AboutPanel());
+            extendedDialog.setVisible(true);
+        } catch (IOException ex) {
+            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_menuItemAboutActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel mainPanel;

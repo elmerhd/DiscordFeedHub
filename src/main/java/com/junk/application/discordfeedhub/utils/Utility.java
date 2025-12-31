@@ -59,6 +59,10 @@ public class Utility {
         return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-32.png");
     }
     
+    public static String getAboutInfoHTMLFile() {
+        return "/com/junk/application/discordfeedhub/about.html";
+    }
+    
     public static FlatSVGIcon getSettingIcon() {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/gear.svg");
     }
