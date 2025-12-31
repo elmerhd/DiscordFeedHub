@@ -44,17 +44,21 @@ public class DatabaseManager {
                     item_link TEXT,
                     posted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     UNIQUE (rss_source_id, item_guid),
-                    FOREIGN KEY (rss_source_id) REFERENCES rss_sources(id)
+                    FOREIGN KEY (rss_source_id) REFERENCES rss_source(id)
                 );
             """;
             conn.createStatement().execute(sqlRSSSource);
             conn.createStatement().execute(sqlPostedItem);
         } catch (IOException | SQLException ex) {
+            System.err.println(ex);
             System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
     
     private static String getDatabaseConnectionURL() throws IOException {
+        if (isTestEnvironment()) {
+            return "jdbc:sqlite:file:memdb1?mode=memory&cache=shared";
+        }
         Properties applicationProperty = Utility.getApplicationProperty();
         String applicationName = applicationProperty.getProperty("app.name");
         String template = "jdbc:sqlite:{0}\\{1}.db";
@@ -308,49 +312,6 @@ public class DatabaseManager {
         }
     }
     
-    public static DmlResult deleteRssSource(int id) {
-        String sql = "DELETE FROM rss_source WHERE id = ?";
-
-        try (Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows > 0) {
-                return DmlResult.failure(
-                        DmlStatus.NO_ROWS_AFFECTED,
-                        "No rows were affected",
-                        null);
-            }
-            
-            return DmlResult.success(affectedRows);
-
-        } catch (SQLTimeoutException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            return DmlResult.failure(
-                    DmlStatus.TIMEOUT,
-                    "Query execution timed out",
-                    ex
-            );
-        } catch (SQLException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            return DmlResult.failure(
-                    DmlStatus.UNKNOWN_ERROR,
-                    ex.getMessage(),
-                    ex
-            );
-        } catch (IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            return DmlResult.failure(
-                DmlStatus.UNKNOWN_ERROR,
-                ex.getMessage(),
-                ex
-            );
-        }
-    }
-    
     public static List<RssSource> loadSources() throws SQLException, IOException {
         return loadSources(false);
     }
@@ -388,4 +349,14 @@ public class DatabaseManager {
         }
         return list;
     }
+    
+    public static boolean isTestEnvironment() {
+        try {
+            Class.forName("org.junit.jupiter.api.Test"); // JUnit 5
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+    
 }
