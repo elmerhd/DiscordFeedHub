@@ -5,8 +5,11 @@ import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.RssSourceTableModel;
 import com.junk.application.discordfeedhub.utils.DmlResult;
 import com.junk.application.discordfeedhub.utils.Utility;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.JTableHeader;
@@ -58,75 +61,69 @@ public class DataPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonUpdate = new javax.swing.JButton();
-        buttonNew = new javax.swing.JButton();
         scrollPaneTable = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
-        buttonRun = new javax.swing.JButton();
-        buttonDelete = new javax.swing.JButton();
         labelStatus = new javax.swing.JLabel();
-
-        buttonUpdate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonUpdate.setText("Update");
-        buttonUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        buttonUpdate.addActionListener(this::buttonUpdateActionPerformed);
-
-        buttonNew.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonNew.setText("New");
-        buttonNew.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        buttonNew.addActionListener(this::buttonNewActionPerformed);
+        panelToolbar = new javax.swing.JPanel();
+        buttonUpdate = new javax.swing.JButton();
+        buttonNew = new javax.swing.JButton();
+        buttonRun = new javax.swing.JButton();
 
         dataTable.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         dataTable.setModel(model);
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPaneTable.setViewportView(dataTable);
 
-        buttonRun.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonRun.setText(getRunButtonText());
-        buttonRun.addActionListener(this::buttonRunActionPerformed);
-
-        buttonDelete.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonDelete.setText("Delete");
-        buttonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        buttonDelete.addActionListener(this::buttonDeleteActionPerformed);
-
         labelStatus.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         labelStatus.setText(getStatusText());
+
+        panelToolbar.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        panelToolbar.setLayout(new javax.swing.BoxLayout(panelToolbar, javax.swing.BoxLayout.LINE_AXIS));
+
+        buttonUpdate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonUpdate.setText("Update");
+        buttonUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonUpdate.addActionListener(this::buttonUpdateActionPerformed);
+        panelToolbar.add(buttonUpdate);
+        panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
+
+        buttonNew.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonNew.setText("New");
+        buttonNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonNew.addActionListener(this::buttonNewActionPerformed);
+        panelToolbar.add(buttonNew);
+        panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
+
+        buttonRun.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonRun.setText(getRunButtonText());
+        buttonRun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonRun.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonRun.addActionListener(this::buttonRunActionPerformed);
+        panelToolbar.add(buttonRun);
+        panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(274, Short.MAX_VALUE)
-                        .addComponent(buttonRun)
-                        .addGap(5, 5, 5)
-                        .addComponent(buttonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(buttonUpdate)
-                        .addGap(5, 5, 5)
-                        .addComponent(buttonDelete))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrollPaneTable)
-                            .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
+                    .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonRun, buttonUpdate});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonRun)
-                    .addComponent(buttonDelete)
-                    .addComponent(buttonNew)
-                    .addComponent(buttonUpdate))
+                .addComponent(panelToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
@@ -134,8 +131,7 @@ public class DataPanel extends javax.swing.JPanel {
                 .addGap(5, 5, 5))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonDelete, buttonNew, buttonRun, buttonUpdate});
-
+        panelToolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
@@ -153,25 +149,6 @@ public class DataPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
-
-    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        try {
-            int row = dataTable.getSelectedRow();
-            int id = (int) dataTable.getValueAt(row, 0);
-            String title = (String) dataTable.getValueAt(row, 1);
-            int option = JOptionPane.showConfirmDialog(this, "Sure to delete " + title + "?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (option == JOptionPane.YES_OPTION) {
-                DmlResult dmlResult = DatabaseManager.deleteRssSource(id);
-                loadSources();
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException | IOException ex) {
-            System.getLogger(DataPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            JOptionPane.showMessageDialog(this, "Unknown Error!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
         if (model.getRowCount() < 1) {
@@ -192,12 +169,12 @@ public class DataPanel extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonNew;
     private javax.swing.JButton buttonRun;
     private javax.swing.JButton buttonUpdate;
     private javax.swing.JTable dataTable;
     private javax.swing.JLabel labelStatus;
+    private javax.swing.JPanel panelToolbar;
     private javax.swing.JScrollPane scrollPaneTable;
     // End of variables declaration//GEN-END:variables
 }

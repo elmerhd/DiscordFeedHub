@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>About ${appName} ${appVersion}</title>
+    <style>
+        body { font-family: Arial; font-size: 12pt; color: #333; margin: 10px; }
+        h2 { color: #0056b3; margin-bottom: 5px; }
+        h3 { margin-top: 15px; color: #444; }
+        a { color: #1a0dab; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .mono { font-family: 'Courier New', monospace; background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px; }
+        ul { margin-top: 5px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <p><strong>Product Version:</strong> ${appVersion}<br>
+       <strong>Runtime Environment:</strong> ${javaVersion}<br>
+       <strong>System:</strong> ${osInfo}<br>
+       <strong>User Directory:</strong> <span class="mono">${userDir}</span><br>
+
+    <h3>Dependencies:</h3>
+    <ul>
+        <li><a href="https://mvnrepository.com/artifact/com.formdev/flatlaf">FlatLaf 3.7</a> – Lightweight Look and Feel for Java Swing</li>
+        <li><a href="https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp">OkHttp 4.12.0</a> – HTTP client for sending requests</li>
+        <li><a href="https://mvnrepository.com/artifact/org.json/json">JSON org.json 20251224</a> – JSON processing</li>
+        <li><a href="https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc">SQLite JDBC 3.43.0</a> – Embedded database access</li>
+        <li><a href="https://mvnrepository.com/artifact/org.mini2Dx/universal-tween-engine">Universal Tween Engine 6.3.3</a> – Component Animation</li>
+        <li><a href="https://mvnrepository.com/artifact/com.rometools/rome">Rome 2.1.0</a> – RSS parsing</li>
+    </ul>
+
+    <h3>Source Code & Repository:</h3>
+    <a href="https://github.com/elmerhd/DiscordFeedHub" target="_blank">GitHub Repository</a>
+
+    <h3>License:</h3>
+    <p>This project is licensed under the <strong>Apache License 2.0</strong>.<br>
+       See <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">LICENSE</a> for details.</p>
+
+    <h3>Credits:</h3>
+    <ul>
+        <li>Developed by <a href="https://github.com/elmerhd"><strong>Elmer Duron</strong></a></li>
+        <li>Special thanks to all open-source libraries used.</li>
+    </ul>
+</body>
+</html>

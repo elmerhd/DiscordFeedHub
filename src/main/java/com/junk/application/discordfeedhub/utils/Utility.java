@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.junk.application.discordfeedhub.DiscordFeedHub;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -55,12 +56,20 @@ public class Utility {
     }
     
     public static URL getSystemTrayImageURL() throws URISyntaxException {
-        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-64.png");
+        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-32.png");
+    }
+    
+    public static String getAboutInfoHTMLFile() {
+        return "/com/junk/application/discordfeedhub/about.html";
+    }
+    
+    public static FlatSVGIcon getSettingIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/gear.svg");
     }
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
         if (dmlResult.isSuccess()) {
-            JOptionPane.showMessageDialog(extendedPanelModel, dmlResult.message(), "Status", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(extendedPanelModel, "Success!", "Status", JOptionPane.INFORMATION_MESSAGE);
             extendedPanelModel.closeParentDialog();
         } else {
             JOptionPane.showMessageDialog(extendedPanelModel, dmlResult.message(), "Status", JOptionPane.ERROR_MESSAGE);
@@ -78,7 +87,6 @@ public class Utility {
             folder
         );
         applicationFolder = appDir.toAbsolutePath().toString();
-        System.out.println("app dir : " + applicationFolder);
         Files.createDirectories(appDir);
     }
     
