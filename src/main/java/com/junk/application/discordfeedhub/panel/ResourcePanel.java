@@ -100,10 +100,12 @@ public class ResourcePanel extends ExtendedPanelModel {
         checkboxEnabled = new javax.swing.JCheckBox();
 
         buttonClose.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonClose.setIcon(Utility.getCloseIcon());
         buttonClose.setText("Close");
         buttonClose.addActionListener(this::buttonCloseActionPerformed);
 
         buttonSave.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonSave.setIcon(Utility.getSaveIcon());
         buttonSave.setText("Save");
         buttonSave.addActionListener(this::buttonSaveActionPerformed);
 

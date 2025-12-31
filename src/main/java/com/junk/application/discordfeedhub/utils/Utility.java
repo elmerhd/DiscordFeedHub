@@ -67,6 +67,14 @@ public class Utility {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/gear.svg");
     }
     
+    public static FlatSVGIcon getCloseIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/close.svg");
+    }
+    
+    public static FlatSVGIcon getSaveIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/save.svg");
+    }
+    
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
         if (dmlResult.isSuccess()) {
             JOptionPane.showMessageDialog(extendedPanelModel, "Success!", "Status", JOptionPane.INFORMATION_MESSAGE);
