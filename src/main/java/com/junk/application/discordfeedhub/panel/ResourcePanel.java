@@ -40,14 +40,14 @@ public class ResourcePanel extends ExtendedPanelModel {
     
     private void initPlaceholders() {
         String enterText = "Enter ";
-        textTitle.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelTitle));
-        textWebsiteUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelWebsiteUrl));
-        textRssUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelRssUrl));
-        textDiscordWebhook.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelDiscordWebhook));
-        textTitle.putClientProperty("JTextField.showClearButton", true);
-        textWebsiteUrl.putClientProperty("JTextField.showClearButton", true);
-        textRssUrl.putClientProperty("JTextField.showClearButton", true);
-        textDiscordWebhook.putClientProperty("JTextField.showClearButton", true);
+        textFieldTitle.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelTitle));
+        textFieldWebsiteUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelWebsiteUrl));
+        textFieldRssUrl.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelRssUrl));
+        textFieldDiscordWebhook.putClientProperty("JTextField.placeholderText", enterText + sanitizeLabelPlaceHolder(labelDiscordWebhook));
+        textFieldTitle.putClientProperty("JTextField.showClearButton", true);
+        textFieldWebsiteUrl.putClientProperty("JTextField.showClearButton", true);
+        textFieldRssUrl.putClientProperty("JTextField.showClearButton", true);
+        textFieldDiscordWebhook.putClientProperty("JTextField.showClearButton", true);
     }
     
     private String sanitizeLabelPlaceHolder(JLabel label) {
@@ -56,10 +56,10 @@ public class ResourcePanel extends ExtendedPanelModel {
     
     public void setFieldValues(int id) {
         RssSource rssSource = DatabaseManager.getRssResourceById(id);
-        textTitle.setText(rssSource.getTitle());
-        textWebsiteUrl.setText(rssSource.getWebsiteUrl());
-        textRssUrl.setText(rssSource.getRssUrl());
-        textDiscordWebhook.setText(rssSource.getDiscordWebhookUrl());
+        textFieldTitle.setText(rssSource.getTitle());
+        textFieldWebsiteUrl.setText(rssSource.getWebsiteUrl());
+        textFieldRssUrl.setText(rssSource.getRssUrl());
+        textFieldDiscordWebhook.setText(rssSource.getDiscordWebhookUrl());
         checkboxEnabled.setSelected(rssSource.isEnabled());
     }
     
@@ -69,10 +69,10 @@ public class ResourcePanel extends ExtendedPanelModel {
     
     private boolean validateFieldValues() {
         return 
-            !textTitle.getText().isEmpty() &&
-            !textWebsiteUrl.getText().isEmpty() &&
-            !textRssUrl.getText().isEmpty() && 
-            !textDiscordWebhook.getText().isBlank();
+            !textFieldTitle.getText().isEmpty() &&
+            !textFieldWebsiteUrl.getText().isEmpty() &&
+            !textFieldRssUrl.getText().isEmpty() && 
+            !textFieldDiscordWebhook.getText().isBlank();
     }
     
     
@@ -89,56 +89,39 @@ public class ResourcePanel extends ExtendedPanelModel {
         buttonClose = new javax.swing.JButton();
         buttonSave = new javax.swing.JButton();
         labelTitle = new javax.swing.JLabel();
-        textTitle = new javax.swing.JTextField();
+        textFieldTitle = new javax.swing.JTextField();
         labelWebsiteUrl = new javax.swing.JLabel();
-        textWebsiteUrl = new javax.swing.JTextField();
+        textFieldWebsiteUrl = new javax.swing.JTextField();
         labelRssUrl = new javax.swing.JLabel();
-        textRssUrl = new javax.swing.JTextField();
+        textFieldRssUrl = new javax.swing.JTextField();
         labelDiscordWebhook = new javax.swing.JLabel();
-        textDiscordWebhook = new javax.swing.JTextField();
+        textFieldDiscordWebhook = new javax.swing.JTextField();
         labelEnabled = new javax.swing.JLabel();
         checkboxEnabled = new javax.swing.JCheckBox();
 
-        buttonClose.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         buttonClose.setIcon(Utility.getCloseIcon());
         buttonClose.setText("Close");
         buttonClose.addActionListener(this::buttonCloseActionPerformed);
 
-        buttonSave.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         buttonSave.setIcon(Utility.getSaveIcon());
         buttonSave.setText("Save");
         buttonSave.addActionListener(this::buttonSaveActionPerformed);
 
-        labelTitle.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelTitle.setText("Title : ");
+        labelTitle.setText("Title :");
 
-        textTitle.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
-        labelWebsiteUrl.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelWebsiteUrl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelWebsiteUrl.setText("Website URL : ");
+        labelWebsiteUrl.setText("Website URL :");
 
-        textWebsiteUrl.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
-        labelRssUrl.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelRssUrl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelRssUrl.setText("RSS URL : ");
+        labelRssUrl.setText("RSS URL :");
 
-        textRssUrl.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
-        labelDiscordWebhook.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelDiscordWebhook.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelDiscordWebhook.setText("Discord Webhook : ");
+        labelDiscordWebhook.setText("Discord Webhook :");
 
-        textDiscordWebhook.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-
-        labelEnabled.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelEnabled.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelEnabled.setText("Enabled :");
-        labelEnabled.setEnabled(isUpdate());
 
-        checkboxEnabled.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkboxEnabled.setText("Enabled");
         checkboxEnabled.setEnabled(isUpdate());
 
@@ -150,37 +133,29 @@ public class ResourcePanel extends ExtendedPanelModel {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelEnabled, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(checkboxEnabled)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(buttonSave)
                         .addGap(10, 10, 10)
                         .addComponent(buttonClose))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelDiscordWebhook)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textDiscordWebhook, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelTitle)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(labelEnabled, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                                .addComponent(labelDiscordWebhook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(labelRssUrl)
+                            .addComponent(labelWebsiteUrl)
+                            .addComponent(labelTitle))
                         .addGap(10, 10, 10)
-                        .addComponent(textTitle))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelWebsiteUrl)
-                        .addGap(10, 10, 10)
-                        .addComponent(textWebsiteUrl))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelRssUrl)
-                        .addGap(10, 10, 10)
-                        .addComponent(textRssUrl)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldTitle)
+                            .addComponent(textFieldWebsiteUrl)
+                            .addComponent(textFieldRssUrl)
+                            .addComponent(textFieldDiscordWebhook, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkboxEnabled, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(10, 10, 10))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {labelDiscordWebhook, labelEnabled, labelRssUrl, labelTitle, labelWebsiteUrl});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {checkboxEnabled, textDiscordWebhook});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,19 +163,19 @@ public class ResourcePanel extends ExtendedPanelModel {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTitle)
-                    .addComponent(textTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelWebsiteUrl)
-                    .addComponent(textWebsiteUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldWebsiteUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelRssUrl)
-                    .addComponent(textRssUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldRssUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelDiscordWebhook)
-                    .addComponent(textDiscordWebhook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldDiscordWebhook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelEnabled)
@@ -212,7 +187,7 @@ public class ResourcePanel extends ExtendedPanelModel {
                 .addGap(10, 10, 10))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {checkboxEnabled, labelDiscordWebhook, labelEnabled, labelRssUrl, labelTitle, labelWebsiteUrl, textDiscordWebhook, textRssUrl, textTitle, textWebsiteUrl});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {checkboxEnabled, labelDiscordWebhook, labelEnabled, labelRssUrl, labelTitle, labelWebsiteUrl, textFieldDiscordWebhook, textFieldRssUrl, textFieldTitle, textFieldWebsiteUrl});
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -224,9 +199,9 @@ public class ResourcePanel extends ExtendedPanelModel {
         DmlResult result = null;
         if (validateFieldValues()) {
             if (!isUpdate) {
-                result = DatabaseManager.saveNewResource(textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText());
+                result = DatabaseManager.saveNewResource(textFieldTitle.getText(), textFieldWebsiteUrl.getText(), textFieldRssUrl.getText(), textFieldDiscordWebhook.getText());
             } else {
-                result = DatabaseManager.updateRSSSource(id, textTitle.getText(), textWebsiteUrl.getText(), textRssUrl.getText(), textDiscordWebhook.getText(), checkboxEnabled.isSelected() ? 1 : 0);
+                result = DatabaseManager.updateRSSSource(id, textFieldTitle.getText(), textFieldWebsiteUrl.getText(), textFieldRssUrl.getText(), textFieldDiscordWebhook.getText(), checkboxEnabled.isSelected() ? 1 : 0);
             }
             Utility.checkStatus(this, result);
             try {
@@ -248,9 +223,9 @@ public class ResourcePanel extends ExtendedPanelModel {
     private javax.swing.JLabel labelRssUrl;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JLabel labelWebsiteUrl;
-    private javax.swing.JTextField textDiscordWebhook;
-    private javax.swing.JTextField textRssUrl;
-    private javax.swing.JTextField textTitle;
-    private javax.swing.JTextField textWebsiteUrl;
+    private javax.swing.JTextField textFieldDiscordWebhook;
+    private javax.swing.JTextField textFieldRssUrl;
+    private javax.swing.JTextField textFieldTitle;
+    private javax.swing.JTextField textFieldWebsiteUrl;
     // End of variables declaration//GEN-END:variables
 }

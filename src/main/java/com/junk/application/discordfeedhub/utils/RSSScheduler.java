@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
  */
 public class RSSScheduler {
     private int retryCount = 0;
-    private final int INTERVAL_SECONDS = 120;
     private boolean started = false;
 
     private ScheduledExecutorService scheduler = null;
@@ -49,7 +48,7 @@ public class RSSScheduler {
             }
         },
             0,
-            INTERVAL_SECONDS,
+            Utility.getPreference().getSchedulerTimerInterval(),
             TimeUnit.SECONDS
         );
     }

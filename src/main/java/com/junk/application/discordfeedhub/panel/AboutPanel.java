@@ -1,5 +1,9 @@
 package com.junk.application.discordfeedhub.panel;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import com.junk.application.discordfeedhub.utils.ComponentAccessor;
+import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -21,6 +25,20 @@ public class AboutPanel extends javax.swing.JPanel {
     public AboutPanel() throws IOException {
         initComponents();
         setupInfo();
+        setupAnimation();
+    }
+    
+    public void setupAnimation() {
+        Timeline.createSequence()
+            .beginParallel()
+                .push(Tween.set(labelLogo, ComponentAccessor.POSITION_X).target(-1000))
+                .push(Tween.set(scrollPaneInfo, ComponentAccessor.POSITION_X).target(scrollPaneInfo.getWidth() + 1000))
+            .end()
+            .beginParallel()
+                .push(Tween.to(labelLogo, ComponentAccessor.POSITION_X, 1f).target(5))
+                .push(Tween.to(scrollPaneInfo, ComponentAccessor.POSITION_X, 1f).target(5))
+            .end()
+            .start(TweenAnimationManager.getTweenManager());
     }
     
     public void setupInfo() throws IOException {
@@ -33,7 +51,7 @@ public class AboutPanel extends javax.swing.JPanel {
                 try {
                     Desktop.getDesktop().browse(new URI(e.getURL().toString()));
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    System.getLogger(AboutPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
             }
         });
@@ -61,7 +79,7 @@ public class AboutPanel extends javax.swing.JPanel {
         
         return html;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,7 +95,6 @@ public class AboutPanel extends javax.swing.JPanel {
 
         editorPaneInfo.setEditable(false);
         editorPaneInfo.setContentType("text/html"); // NOI18N
-        editorPaneInfo.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         scrollPaneInfo.setViewportView(editorPaneInfo);
 
         labelLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -88,23 +105,22 @@ public class AboutPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPaneInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
-                    .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scrollPaneInfo)
+                    .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(5, 5, 5)
                 .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(scrollPaneInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(scrollPaneInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addGap(5, 5, 5))
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane editorPaneInfo;

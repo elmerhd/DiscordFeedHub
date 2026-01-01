@@ -16,7 +16,7 @@ public class RssSourceTableModel extends AbstractTableModel {
     }
 
     private final String[] columns = {
-        "ID", "Title", "Website URL", "RSS URL", "Discord Webhook", "Enabled"
+        "Id", "Title", "Website URL", "RSS URL", "Discord Webhook", "Enabled"
     };
 
     private List<RssSource> data = new ArrayList<>();

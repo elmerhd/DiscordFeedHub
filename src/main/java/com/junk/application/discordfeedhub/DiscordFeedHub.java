@@ -1,17 +1,17 @@
 package com.junk.application.discordfeedhub;
 
-import com.formdev.flatlaf.FlatLightLaf;
 import com.junk.application.discordfeedhub.ui.Main;
 import com.junk.application.discordfeedhub.utils.ApplicationTaskbar;
 import com.junk.application.discordfeedhub.utils.ApplicationTray;
+import com.junk.application.discordfeedhub.utils.Constants;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 /**
  *
@@ -26,10 +26,12 @@ public class DiscordFeedHub {
     public void launchApplication(String [] args){
         try {
             Properties applicationProperty = Utility.getApplicationProperty();
-            UIManager.setLookAndFeel( new FlatLightLaf() );
             TweenAnimationManager.registerTweenAccessors();
+            
+            Utility.installLookAndFeels();
             Utility.createApplicationFolder(applicationProperty);
             Utility.setupLogger();
+            Utility.checkSettings();
             
             Main mainUI = new Main();
             String applicationName = applicationProperty.getProperty("app.name");
@@ -57,9 +59,8 @@ public class DiscordFeedHub {
             
             // setup task bar for mac os
             new ApplicationTaskbar(macImageLogo).setUpTaskBar();
-            
-            if (args.length != 0 && args[0] != null && args[0] == "--no-ui") {
-                //todo
+            if (args.length != 0 && args[0] != null && Constants.STARTUP_ARGS_MINIMIZED.equals(args[0])) {
+                Utility.getScheduler().start(null);
             } else {
                 mainUI.setVisible(true);
             }

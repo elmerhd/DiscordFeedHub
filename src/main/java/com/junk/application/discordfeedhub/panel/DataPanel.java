@@ -2,8 +2,8 @@ package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.utils.ExtendedDialog;
+import com.junk.application.discordfeedhub.utils.HeaderRenderer;
 import com.junk.application.discordfeedhub.utils.RssSourceTableModel;
-import com.junk.application.discordfeedhub.utils.DmlResult;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -32,7 +34,7 @@ public class DataPanel extends javax.swing.JPanel {
         this.parent = frame;
         initComponentsVisual();
         loadSources();
-        buttonRun.setText(getRunButtonText());
+        checkRunningScheduler();
     }
     
     public String getStatusText() {
@@ -44,12 +46,30 @@ public class DataPanel extends javax.swing.JPanel {
     }
     
     public void initComponentsVisual() {
-        JTableHeader header = dataTable.getTableHeader();
-        header.setFont(dataTable.getFont());
+        TableColumnModel cm = dataTable.getColumnModel();
+
+        // Fix first column
+        cm.getColumn(0).setPreferredWidth(50);
+        cm.getColumn(0).setMinWidth(50);
+        cm.getColumn(0).setMaxWidth(50);
+        
+        cm.getColumn(5).setPreferredWidth(100);
+        cm.getColumn(5).setMinWidth(100);
+        cm.getColumn(5).setMaxWidth(100);
+        
+        dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        
+        dataTable.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        
     }
     
     public void loadSources() throws SQLException, IOException {
         model.setData(DatabaseManager.loadSources());
+    }
+    
+    public void checkRunningScheduler() {
+        toggleButtonRun.setText(getRunButtonText());
+        toggleButtonRun.setSelected(Utility.getScheduler().isStarted());
     }
 
     /**
@@ -67,42 +87,32 @@ public class DataPanel extends javax.swing.JPanel {
         panelToolbar = new javax.swing.JPanel();
         buttonUpdate = new javax.swing.JButton();
         buttonNew = new javax.swing.JButton();
-        buttonRun = new javax.swing.JButton();
+        toggleButtonRun = new javax.swing.JToggleButton();
 
-        dataTable.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         dataTable.setModel(model);
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPaneTable.setViewportView(dataTable);
 
-        labelStatus.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         labelStatus.setText(getStatusText());
 
-        panelToolbar.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         panelToolbar.setLayout(new javax.swing.BoxLayout(panelToolbar, javax.swing.BoxLayout.LINE_AXIS));
 
-        buttonUpdate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonUpdate.setIcon(Utility.getUpdateIcon());
         buttonUpdate.setText("Update");
-        buttonUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonUpdate.addActionListener(this::buttonUpdateActionPerformed);
         panelToolbar.add(buttonUpdate);
         panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        buttonNew.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        buttonNew.setIcon(Utility.getNewIcon());
+        buttonNew.setMnemonic('N');
         buttonNew.setText("New");
-        buttonNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonNew.addActionListener(this::buttonNewActionPerformed);
         panelToolbar.add(buttonNew);
         panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        buttonRun.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        buttonRun.setText(getRunButtonText());
-        buttonRun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonRun.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonRun.addActionListener(this::buttonRunActionPerformed);
-        panelToolbar.add(buttonRun);
-        panelToolbar.add(Box.createRigidArea(new Dimension(5, 0)));
+        toggleButtonRun.setText(getRunButtonText());
+        toggleButtonRun.addActionListener(this::toggleButtonRunActionPerformed);
+        panelToolbar.add(toggleButtonRun);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -125,7 +135,7 @@ public class DataPanel extends javax.swing.JPanel {
                 .addGap(5, 5, 5)
                 .addComponent(panelToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5))
@@ -150,7 +160,7 @@ public class DataPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
-    private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
+    private void toggleButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleButtonRunActionPerformed
         if (model.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -161,20 +171,25 @@ public class DataPanel extends javax.swing.JPanel {
         } else {
             Utility.getScheduler().start(labelStatus);
         }
-        buttonRun.setText(getRunButtonText());
-    }//GEN-LAST:event_buttonRunActionPerformed
+        toggleButtonRun.setText(getRunButtonText());
+    }//GEN-LAST:event_toggleButtonRunActionPerformed
     
     public String getRunButtonText() {
+        if (Utility.getScheduler().isStarted()) {
+            toggleButtonRun.setIcon(Utility.getStopIcon());
+        } else {
+            toggleButtonRun.setIcon(Utility.getStartIcon());
+        }
         return Utility.getScheduler().isStarted() ? "Stop" : "Start";
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonNew;
-    private javax.swing.JButton buttonRun;
     private javax.swing.JButton buttonUpdate;
     private javax.swing.JTable dataTable;
     private javax.swing.JLabel labelStatus;
     private javax.swing.JPanel panelToolbar;
     private javax.swing.JScrollPane scrollPaneTable;
+    private javax.swing.JToggleButton toggleButtonRun;
     // End of variables declaration//GEN-END:variables
 }
