@@ -1,12 +1,15 @@
 package com.junk.application.discordfeedhub.utils;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
 import com.junk.application.discordfeedhub.DiscordFeedHub;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,10 +20,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -30,6 +38,7 @@ public class Utility {
     
     private static RSSScheduler scheduler = new RSSScheduler();
     private static String applicationFolder = null;
+    private static Preference preference;
     
     public static Toolkit getDefaultToolkit() {
         return Toolkit.getDefaultToolkit();
@@ -65,6 +74,30 @@ public class Utility {
     
     public static FlatSVGIcon getSettingIcon() {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/gear.svg");
+    }
+    
+    public static FlatSVGIcon getCloseIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/close.svg");
+    }
+    
+    public static FlatSVGIcon getSaveIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/save.svg");
+    }
+    
+    public static FlatSVGIcon getNewIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/new.svg");
+    }
+    
+    public static FlatSVGIcon getUpdateIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/update.svg");
+    }
+    
+    public static FlatSVGIcon getStartIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/play.svg");
+    }
+    
+    public static FlatSVGIcon getStopIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/stop.svg");
     }
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
@@ -127,5 +160,47 @@ public class Utility {
         popupMenu.add(openItem);
         popupMenu.add(quitMenuItem);
         return popupMenu;
+    }
+    
+    public static void installLookAndFeels(){
+        List<Theme> themes = new ArrayList<>();
+        themes.add(new Theme("Monocai", "com.formdev.flatlaf.intellijthemes.FlatMonocaiIJTheme"));
+        themes.add(new Theme("Material Design Dark", "com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme"));
+        themes.add(new Theme("Gradianto Nature Green", "com.formdev.flatlaf.intellijthemes.FlatGradiantoNatureGreenIJTheme"));
+        themes.add(new Theme("Gradianto Midnight Blue", "com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme"));
+        themes.add(new Theme("Gradianto Nature Green", "com.formdev.flatlaf.intellijthemes.FlatGradiantoNatureGreenIJTheme"));
+        themes.add(new Theme("Gradianto Dark Fuchsia", "com.formdev.flatlaf.intellijthemes.FlatGradiantoDarkFuchsiaIJTheme"));
+        themes.add(new Theme("Dark Purple", "com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme"));
+        themes.add(new Theme("Cyan Light", "com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme"));
+        themes.add(new Theme("Carbon", "com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme"));
+        themes.add(new Theme("Arc Orange", "com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme"));
+        themes.add(new Theme("Arc Dark", "com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme"));
+        themes.add(new Theme("Flat Light", "com.formdev.flatlaf.FlatLightLaf"));
+        themes.add(new Theme("Flat Dark", "com.formdev.flatlaf.FlatDarkLaf"));
+        
+        for(Theme theme: themes) {
+            UIManager.installLookAndFeel(new FlatAllIJThemes.FlatIJLookAndFeelInfo(theme.getName(), theme.getClassName(), (theme.getClassName().contains("Dark")) ));
+        }
+    }
+    
+    public static void checkSettings() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        Properties applicationProperty = getApplicationProperty();
+        String preferenceFile = applicationProperty.getProperty("app.settings");
+        String template = "{0}\\{1}";
+        String result = MessageFormat.format(
+                template,
+                Utility.getApplicationFolder(),
+                preferenceFile
+        );
+        preference = new Preference(new File(result));
+        preference.applyTheme();
+    }
+    
+    public static void setPreference(Preference pref) {
+        preference = pref;
+    }
+    
+    public static Preference getPreference() {
+        return preference;
     }
 }

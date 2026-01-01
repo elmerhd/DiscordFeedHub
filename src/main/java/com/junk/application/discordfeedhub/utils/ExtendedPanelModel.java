@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  *
  * @author elmerhd
  */
-public class ExtendedPanelModel extends JPanel implements ExtendedPanel {
+public class ExtendedPanelModel extends JPanel implements IExtendedPanel {
 
     @Override
     public void closeParentDialog() {

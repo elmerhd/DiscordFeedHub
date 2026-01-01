@@ -10,8 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class DiscordPostQueue {
 
-    private static final int INTERVAL_SECONDS = 5;
-
     private static final BlockingQueue<DiscordPost> queue = new LinkedBlockingQueue<>();
 
     private static ScheduledExecutorService scheduler;
@@ -51,7 +49,7 @@ public final class DiscordPostQueue {
         scheduler.scheduleAtFixedRate(
                 DiscordPostQueue::processQueue,
                 0,
-                INTERVAL_SECONDS,
+                Utility.getPreference().getWebhookQueueDelay(),
                 TimeUnit.SECONDS
         );
     }

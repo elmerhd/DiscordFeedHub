@@ -45,12 +45,14 @@ public class LoadingPanel extends javax.swing.JPanel {
         TweenCallback animationDone = new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> bt) {
-                try {
-                    Thread.sleep(Duration.ofSeconds(1));
-                } catch (InterruptedException ex) {
-                    System.getLogger(LoadingPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
-                mainUI.showDataPanel();
+                new Thread(()-> {
+                        try {
+                            Thread.sleep(Duration.ofSeconds(1));
+                            mainUI.showDataPanel();
+                        } catch (InterruptedException ex) {
+                            System.getLogger(LoadingPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                        }
+                    }).start();
             }
         };
         
