@@ -1,9 +1,9 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.junk.application.discordfeedhub.model.DmlResult;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
 import com.junk.application.discordfeedhub.DiscordFeedHub;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.ImageIcon;
@@ -58,6 +57,10 @@ public class Utility {
         Properties applicationProperty = new Properties();
         applicationProperty.load(inputstream);
         return applicationProperty;
+    }
+    
+    public static URL getLoadingImageURL() throws URISyntaxException {
+        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-256.png");
     }
     
     public static URL getMacApplicationImageURL() throws URISyntaxException {
@@ -98,6 +101,10 @@ public class Utility {
     
     public static FlatSVGIcon getStopIcon() {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/stop.svg");
+    }
+    
+    public static FlatSVGIcon getDownloadIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/download.svg");
     }
     
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
@@ -202,5 +209,48 @@ public class Utility {
     
     public static Preference getPreference() {
         return preference;
+    }
+    
+    /**
+     * Gets the currently running JAR file
+     */
+    public static File getRunningJarFile() {
+        try {
+            File jarFile = new File(
+                    Utility.class
+                            .getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI()
+            );
+            if (jarFile.isFile()) {
+                return jarFile; // running from JAR
+            } else {
+                return null; // running from IDE
+            }
+        } catch (URISyntaxException ex) {
+            System.getLogger(Utility.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return null;
+        }
+    }
+    
+    public static boolean safeDeleteFile(File fileToDelete) {
+        return fileToDelete != null && fileToDelete.exists() && fileToDelete.delete();
+    }
+    
+    public static String formatFileSize(long bytes) {
+        if (bytes < 0) return "0 B";
+        if (bytes < 1024) return bytes + " B";
+
+        final String[] units = {"KB", "MB", "GB", "TB"};
+        double size = bytes;
+        int unitIndex = -1;
+
+        do {
+            size /= 1024;
+            unitIndex++;
+        } while (size >= 1024 && unitIndex < units.length - 1);
+
+        return String.format("%.2f %s", size, units[unitIndex]);
     }
 }

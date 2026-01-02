@@ -1,4 +1,6 @@
-package com.junk.application.discordfeedhub.utils;
+package com.junk.application.discordfeedhub.model;
+
+import com.junk.application.discordfeedhub.utils.DmlStatus;
 
 /**
  *

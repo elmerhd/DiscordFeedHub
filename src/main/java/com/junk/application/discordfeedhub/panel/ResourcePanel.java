@@ -2,7 +2,7 @@ package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.RssSource;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
-import com.junk.application.discordfeedhub.utils.DmlResult;
+import com.junk.application.discordfeedhub.model.DmlResult;
 import com.junk.application.discordfeedhub.utils.ExtendedPanelModel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.io.IOException;

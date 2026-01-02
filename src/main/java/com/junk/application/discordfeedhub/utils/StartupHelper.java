@@ -1,6 +1,5 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.DiscordFeedHub;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,40 +40,15 @@ public class StartupHelper {
     }
 
     /**
-     * Gets the currently running JAR file
-     */
-    private static File getRunningJarFile() {
-        try {
-            File jarFile = new File(
-                    StartupHelper.class
-                            .getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI()
-            );
-            if (jarFile.isFile()) {
-                return jarFile; // running from JAR
-            } else {
-                return null; // running from IDE
-            }
-        } catch (URISyntaxException ex) {
-            System.getLogger(StartupHelper.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            return null;
-        }
-    }
-
-    /**
      * Adds the currently running JAR to Windows Startup
      *
-     * @param appName Name of the app (used for the batch file)
+     * @return return if batch file created, false if not
      */
-    public static boolean addToStartup() {
+    public static boolean addToStartup(File jarFile) {
         if (!isWindows()) {
             System.out.println("Startup only supported on Windows");
             return false;
         }
-
-        File jarFile = getRunningJarFile();
         if (jarFile == null) {
             System.out.println("Cannot detect running JAR. Startup skipped.");
             return false;
@@ -102,7 +76,7 @@ public class StartupHelper {
     /**
      * Removes the startup batch file
      *
-     * @param appName Name of the app (used for the batch file)
+     * @return true if the batch file removed, false if not
      */
     public static boolean removeFromStartup() {
         if (!isWindows()) {

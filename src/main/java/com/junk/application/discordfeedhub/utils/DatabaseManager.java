@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.junk.application.discordfeedhub.model.DmlResult;
 import com.junk.application.discordfeedhub.model.RssSource;
 import java.io.IOException;
 import java.sql.Connection;

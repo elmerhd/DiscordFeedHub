@@ -73,7 +73,7 @@ public class Preference {
         prefProperties.store(outputStream, null);
         outputStream.close();
         if (this.runningAtStartup) {
-            StartupHelper.addToStartup();
+            StartupHelper.addToStartup(Utility.getRunningJarFile());
         } else {
             StartupHelper.removeFromStartup();
         }
