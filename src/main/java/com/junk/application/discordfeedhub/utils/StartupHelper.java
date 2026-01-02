@@ -1,6 +1,5 @@
 package com.junk.application.discordfeedhub.utils;
 
-import com.junk.application.discordfeedhub.DiscordFeedHub;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -66,7 +65,7 @@ public class StartupHelper {
     /**
      * Adds the currently running JAR to Windows Startup
      *
-     * @param appName Name of the app (used for the batch file)
+     * @return return if batch file created, false if not
      */
     public static boolean addToStartup() {
         if (!isWindows()) {
@@ -102,7 +101,7 @@ public class StartupHelper {
     /**
      * Removes the startup batch file
      *
-     * @param appName Name of the app (used for the batch file)
+     * @return true if the batch file removed, false if not
      */
     public static boolean removeFromStartup() {
         if (!isWindows()) {
