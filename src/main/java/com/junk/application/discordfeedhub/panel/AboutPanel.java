@@ -1,17 +1,26 @@
 package com.junk.application.discordfeedhub.panel;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.equations.Linear;
 import com.junk.application.discordfeedhub.utils.ComponentAccessor;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -29,6 +38,16 @@ public class AboutPanel extends javax.swing.JPanel {
     }
     
     public void setupAnimation() {
+        TweenCallback callback = (int x, BaseTween<?> bt) -> {
+            int snowCount = 20;
+            for (int i = 0; i < snowCount; i++) {
+                JLabel snow = createSnowflake(random(4, 8));
+                add(snow);
+                setComponentZOrder(snow, 0); // behind logo/text
+                animateSnowflake(snow);
+            }
+        };
+        
         Timeline.createSequence()
             .beginParallel()
                 .push(Tween.set(labelLogo, ComponentAccessor.POSITION_X).target(-1000))
@@ -38,7 +57,55 @@ public class AboutPanel extends javax.swing.JPanel {
                 .push(Tween.to(labelLogo, ComponentAccessor.POSITION_X, 1f).target(5))
                 .push(Tween.to(scrollPaneInfo, ComponentAccessor.POSITION_X, 1f).target(5))
             .end()
+            .setCallback(callback)
             .start(TweenAnimationManager.getTweenManager());
+    }
+    
+    private JLabel createSnowflake(int size) {
+        JLabel snow = new JLabel();
+        snow.setOpaque(false);
+        snow.setSize(size, size);
+
+        snow.setIcon(new ImageIcon(
+            new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB) {{
+                Graphics2D g = createGraphics();
+                g.setColor(new Color(255, 255, 255, 180));
+                g.fillOval(0, 0, size, size);
+                g.dispose();
+            }}
+        ));
+
+        return snow;
+    }
+    
+    private void animateSnowflake(JLabel snow) {
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+
+        int startX = random(0, panelWidth);
+        int endX = startX + random(-40, 40);
+
+        int startY = -random(20, 100);
+        int endY = panelHeight + 50;
+
+        float duration = randomFloat(6f, 12f);
+
+        snow.setLocation(startX, startY);
+
+        Timeline.createSequence()
+            .push(Tween.to(snow, ComponentAccessor.POSITION_XY, duration)
+                .target(endX, endY)
+                .ease(Linear.INOUT))
+            .setCallback((type, source) -> animateSnowflake(snow)) // loop
+            .start(TweenAnimationManager.getTweenManager());
+    }
+    
+    public static int random(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
+    }
+
+    public static float randomFloat(float min, float max) {
+        return ThreadLocalRandom.current().nextFloat() * (max - min) + min;
     }
     
     public void setupInfo() throws IOException {
