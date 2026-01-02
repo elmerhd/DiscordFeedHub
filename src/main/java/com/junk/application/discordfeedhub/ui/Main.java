@@ -58,7 +58,7 @@ public class Main extends javax.swing.JFrame {
         settingsButton.setFocusable( false );
         settingsButton.addActionListener((ActionEvent e) -> {
             ExtendedDialog extendedDialog = null;
-            PreferencePanel preferencePanel = new PreferencePanel(this);
+            PreferencePanel preferencePanel = new PreferencePanel();
             extendedDialog = new ExtendedDialog(this, "Preferences", preferencePanel);
             preferencePanel.setParentDialog(extendedDialog);
             extendedDialog.setVisible(true);

@@ -14,7 +14,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.AbstractDocument;
@@ -26,14 +25,12 @@ import javax.swing.text.AbstractDocument;
 public class PreferencePanel extends javax.swing.JPanel {
     
     private File preferenceFile;
-    private JFrame parent;
     private JDialog parentDialog;
     /**
      * Creates new form PreferencePanel
      */
-    public PreferencePanel(JFrame parent) {
+    public PreferencePanel() {
         initComponents();
-        this.parent = parent;
         this.preferenceFile = Utility.getPreference().getFile();
     }
     
@@ -61,7 +58,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         return new SpinnerNumberModel(
             fontSize,   // initial value
             10,  // min
-            20,  // max
+            30,  // max
             1    // step
         );
     }
