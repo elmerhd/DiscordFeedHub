@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.junk.application.discordfeedhub.model.DmlResult;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
 import com.junk.application.discordfeedhub.DiscordFeedHub;
