@@ -2,6 +2,7 @@ package com.junk.application.discordfeedhub.ui;
 
 import com.formdev.flatlaf.extras.components.FlatButton;
 import com.junk.application.discordfeedhub.panel.AboutPanel;
+import com.junk.application.discordfeedhub.panel.CheckUpdatePanel;
 import com.junk.application.discordfeedhub.panel.PreferencePanel;
 import com.junk.application.discordfeedhub.panel.DataPanel;
 import com.junk.application.discordfeedhub.panel.LoadingPanel;
@@ -136,7 +137,7 @@ public class Main extends javax.swing.JFrame {
 
         menuItemCheckUpdates.setMnemonic('U');
         menuItemCheckUpdates.setText("Check for Updates");
-        menuItemCheckUpdates.setEnabled(false);
+        menuItemCheckUpdates.addActionListener(this::menuItemCheckUpdatesActionPerformed);
         menuHelp.add(menuItemCheckUpdates);
 
         menuItemAbout.setText("About");
@@ -181,6 +182,20 @@ public class Main extends javax.swing.JFrame {
             System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }//GEN-LAST:event_menuItemAboutActionPerformed
+
+    private void menuItemCheckUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCheckUpdatesActionPerformed
+        try {
+            
+            ExtendedDialog extendedDialog = null;
+            CheckUpdatePanel checkUpdatePanel = new CheckUpdatePanel();
+            extendedDialog = new ExtendedDialog(this, "Update Checker", checkUpdatePanel);
+            checkUpdatePanel.setParentDialog(extendedDialog);
+            extendedDialog.setVisible(true);
+        } catch (IOException ex) {
+            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+    }//GEN-LAST:event_menuItemCheckUpdatesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel mainPanel;

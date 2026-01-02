@@ -20,4 +20,6 @@ public class Constants {
     public static final String PREF_DEFAULT_RUN_STARTUP_KEY = "run.startup";
     public static final Boolean PREF_DEFAULT_RUN_STARTUP_VALUE = false;
     public static final String STARTUP_ARGS_MINIMIZED = "--minimized";
+    public static final String STARTUP_ARGS_DELETE = "--delete=";
+    public static final String LATEST_RELEASE_API = "https://api.github.com/repos/elmerhd/DiscordFeedHub/releases/latest";
 }

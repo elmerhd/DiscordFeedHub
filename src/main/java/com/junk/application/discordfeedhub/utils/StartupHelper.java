@@ -40,40 +40,15 @@ public class StartupHelper {
     }
 
     /**
-     * Gets the currently running JAR file
-     */
-    private static File getRunningJarFile() {
-        try {
-            File jarFile = new File(
-                    StartupHelper.class
-                            .getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI()
-            );
-            if (jarFile.isFile()) {
-                return jarFile; // running from JAR
-            } else {
-                return null; // running from IDE
-            }
-        } catch (URISyntaxException ex) {
-            System.getLogger(StartupHelper.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            return null;
-        }
-    }
-
-    /**
      * Adds the currently running JAR to Windows Startup
      *
      * @return return if batch file created, false if not
      */
-    public static boolean addToStartup() {
+    public static boolean addToStartup(File jarFile) {
         if (!isWindows()) {
             System.out.println("Startup only supported on Windows");
             return false;
         }
-
-        File jarFile = getRunningJarFile();
         if (jarFile == null) {
             System.out.println("Cannot detect running JAR. Startup skipped.");
             return false;

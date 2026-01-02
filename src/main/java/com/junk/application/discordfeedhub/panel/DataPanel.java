@@ -83,17 +83,15 @@ public class DataPanel extends javax.swing.JPanel {
 
         scrollPaneTable = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
-        labelStatus = new javax.swing.JLabel();
         panelToolbar = new javax.swing.JPanel();
         buttonUpdate = new javax.swing.JButton();
         buttonNew = new javax.swing.JButton();
         toggleButtonRun = new javax.swing.JToggleButton();
+        labelStatus = new javax.swing.JLabel();
 
         dataTable.setModel(model);
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPaneTable.setViewportView(dataTable);
-
-        labelStatus.setText(getStatusText());
 
         panelToolbar.setLayout(new javax.swing.BoxLayout(panelToolbar, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -114,31 +112,35 @@ public class DataPanel extends javax.swing.JPanel {
         toggleButtonRun.addActionListener(this::toggleButtonRunActionPerformed);
         panelToolbar.add(toggleButtonRun);
 
+        labelStatus.setText(getStatusText());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
-                    .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
                 .addGap(5, 5, 5))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addGap(10, 10, 10)
                 .addComponent(panelToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(scrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                .addGap(5, 5, 5)
-                .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5))
+                .addGap(10, 10, 10)
+                .addComponent(labelStatus)
+                .addGap(10, 10, 10))
         );
 
         panelToolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
