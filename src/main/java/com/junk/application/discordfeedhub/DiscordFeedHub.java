@@ -9,9 +9,7 @@ import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 import java.util.Properties;
-import javax.swing.JOptionPane;
 
 /**
  *
