@@ -60,6 +60,10 @@ public class Utility {
         return applicationProperty;
     }
     
+    public static URL getLoadingImageURL() throws URISyntaxException {
+        return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-256.png");
+    }
+    
     public static URL getMacApplicationImageURL() throws URISyntaxException {
         return DiscordFeedHub.class.getResource("/com/junk/application/discordfeedhub/logo-128.png");
     }
