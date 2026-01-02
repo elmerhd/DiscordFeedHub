@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.AbstractDocument;
@@ -26,14 +26,12 @@ import javax.swing.text.AbstractDocument;
 public class PreferencePanel extends javax.swing.JPanel {
     
     private File preferenceFile;
-    private JFrame parent;
     private JDialog parentDialog;
     /**
      * Creates new form PreferencePanel
      */
-    public PreferencePanel(JFrame parent) {
+    public PreferencePanel() {
         initComponents();
-        this.parent = parent;
         this.preferenceFile = Utility.getPreference().getFile();
     }
     
@@ -61,7 +59,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         return new SpinnerNumberModel(
             fontSize,   // initial value
             10,  // min
-            20,  // max
+            50,  // max
             1    // step
         );
     }
@@ -157,12 +155,17 @@ public class PreferencePanel extends javax.swing.JPanel {
 
         spinnerFontSize.setModel(getFontSizeModel());
         spinnerFontSize.setEditor(new javax.swing.JSpinner.NumberEditor(spinnerFontSize, ""));
+        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinnerFontSize.getEditor();
+
+        JTextField textField = editor.getTextField();
+        textField.setEditable(false);
         spinnerFontSize.addChangeListener(this::spinnerFontSizeStateChanged);
 
         buttonClose.setIcon(Utility.getCloseIcon());
         buttonClose.setText("Close");
         buttonClose.addActionListener(this::buttonCloseActionPerformed);
 
+        checkboxRunStartup.setSelected(Utility.getPreference().isRunningAtStartup());
         checkboxRunStartup.setEnabled(StartupHelper.isWindows());
         checkboxRunStartup.addActionListener(this::checkboxRunStartupActionPerformed);
 
@@ -198,13 +201,10 @@ public class PreferencePanel extends javax.swing.JPanel {
                     .addComponent(textFieldWebhookDelay, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(comboBoxThemes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(comboBoxFont, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spinnerFontSize, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerFontSize, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkboxRunStartup, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {checkboxRunStartup, spinnerFontSize});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()

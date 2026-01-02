@@ -132,7 +132,7 @@ public class Preference {
         return webhookQueueDelay;
     }
 
-    public Boolean getRunningAtStartup() {
+    public Boolean isRunningAtStartup() {
         return runningAtStartup;
     }
 
