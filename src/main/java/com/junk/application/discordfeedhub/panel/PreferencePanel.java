@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -160,6 +159,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         buttonClose.setText("Close");
         buttonClose.addActionListener(this::buttonCloseActionPerformed);
 
+        checkboxRunStartup.setSelected(Utility.getPreference().isRunningAtStartup());
         checkboxRunStartup.setEnabled(StartupHelper.isWindows());
         checkboxRunStartup.addActionListener(this::checkboxRunStartupActionPerformed);
 

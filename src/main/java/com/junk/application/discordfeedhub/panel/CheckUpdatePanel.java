@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.UpdateInfo;
@@ -9,12 +5,10 @@ import com.junk.application.discordfeedhub.utils.GitHubUpdateChecker;
 import com.junk.application.discordfeedhub.utils.JarUpdateInstaller;
 import com.junk.application.discordfeedhub.utils.StartupHelper;
 import com.junk.application.discordfeedhub.utils.Utility;
-import java.awt.Label;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -194,7 +188,7 @@ public class CheckUpdatePanel extends javax.swing.JPanel {
             File tempJar = JarUpdateInstaller.downloadJar(info , (long downloaded, long total) -> {
                 updateProgress(downloaded, total);
             });
-            if (StartupHelper.removeFromStartup() && Utility.getPreference().getRunningAtStartup()) {
+            if (StartupHelper.removeFromStartup() && Utility.getPreference().isRunningAtStartup()) {
                 StartupHelper.addToStartup(tempJar);
             }
             

@@ -28,7 +28,6 @@ public class DiscordFeedHub {
     public void launchApplication(String [] args){
         try {
             List<String> argsList = Arrays.asList(args);
-            System.out.println(argsList);
             Properties applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
