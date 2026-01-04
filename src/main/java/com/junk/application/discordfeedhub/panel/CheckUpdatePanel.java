@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 
 /**
  *
- * @author elmer
+ * @author elmerhd
  */
 public class CheckUpdatePanel extends javax.swing.JPanel {
     
