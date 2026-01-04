@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
@@ -44,7 +45,7 @@ public class RSSScheduler {
             try {
                 runCycle(statusLabel);
             } catch (SQLException | IOException ex) {
-                System.getLogger(RSSScheduler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                DiscordFeedHubLogger.getLogger(RSSScheduler.class.getName()).log(Level.SEVERE, (String) null, ex);
             }
         },
             0,
@@ -55,7 +56,7 @@ public class RSSScheduler {
 
     private void runCycle(JLabel statusLabel) throws SQLException, IOException {
         retryCount++;
-        System.out.println("running retries : " + retryCount);
+        DiscordFeedHubLogger.getLogger(RSSScheduler.class.getName()).log(Level.INFO, () -> ("Running task : retries => " + retryCount));
         if (statusLabel != null) {
             SwingUtilities.invokeLater(() ->
                 statusLabel.setText("Checking Enabled RSS feeds... Retries " + retryCount)
@@ -65,6 +66,7 @@ public class RSSScheduler {
         List<RssSource> sources = DatabaseManager.loadSources(true);
         
         for (RssSource source : sources) {
+            DiscordFeedHubLogger.getLogger(RSSScheduler.class.getName()).log(Level.INFO, () -> ("Checking source : " + source.title() +" => " + retryCount));
             rssExecutor.submit(new RSSReaderTask(source));
         }
     }

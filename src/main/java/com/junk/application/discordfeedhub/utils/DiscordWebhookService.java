@@ -35,6 +35,7 @@ public class DiscordWebhookService {
             if (!response.isSuccessful()) {
                 DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, "Discord webhook failed: " + response.code());
             } else {
+                DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Marking entry as posted: " + entry.getTitle() +" " + response.code());
                 DatabaseManager.markAsPosted(source.id(), UUID.randomUUID().toString(), entry.getLink());
             }
         }

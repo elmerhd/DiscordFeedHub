@@ -89,6 +89,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         pref.setRunningAtStartup(checkboxRunStartup.isSelected());
         pref.savePreference();
         Utility.setPreference(pref);
+        DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Saving settings " + pref.toString());
     }
 
     /**

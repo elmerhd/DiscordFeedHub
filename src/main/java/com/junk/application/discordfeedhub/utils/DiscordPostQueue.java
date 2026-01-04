@@ -4,7 +4,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -67,7 +66,7 @@ public final class DiscordPostQueue {
                 shutdown();
                 return;
             }
-
+            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.SEVERE, () -> "Sending item to discord : " + post.getEntry());
             DiscordWebhookService.send(
                     post.getWebhookUrl(),
                     post.getPayload(),

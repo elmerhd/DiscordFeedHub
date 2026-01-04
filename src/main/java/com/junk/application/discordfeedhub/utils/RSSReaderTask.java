@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
@@ -41,7 +42,10 @@ public class RSSReaderTask implements Runnable {
         try {
             List<SyndEntry> items = getList(source.rssUrl());
             for (SyndEntry entry : items) {
-                if (!DatabaseManager.isPosted(source.id(), entry.getLink())) {
+                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Item found => " +entry.getTitle()));
+                boolean isPosted = DatabaseManager.isPosted(source.id(), entry.getLink());
+                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Checking item in db exist? ("+isPosted+") "));
+                if (!isPosted) {
                     String sanitizedDescription = Jsoup.clean(entry.getDescription().getValue(), Safelist.none());
                     JSONObject embed = new JSONObject()
                         .put("title", entry.getTitle())
@@ -53,11 +57,12 @@ public class RSSReaderTask implements Runnable {
                     
                     JSONObject payload = new JSONObject()
                     .put("embeds", new org.json.JSONArray().put(embed));
+                    DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Queueing item : => " + entry.getTitle()));
                     DiscordPostQueue.enqueue(new DiscordPost(source.discordWebhookUrl(), payload, source, entry));
                 }
             }
         } catch (Exception ex) {
-            System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "RSS error [" + source.title() + "]: " + ex.getMessage(), ex);
+            DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
 }
