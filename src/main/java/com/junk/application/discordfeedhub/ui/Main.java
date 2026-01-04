@@ -6,6 +6,8 @@ import com.junk.application.discordfeedhub.panel.CheckUpdatePanel;
 import com.junk.application.discordfeedhub.panel.PreferencePanel;
 import com.junk.application.discordfeedhub.panel.DataPanel;
 import com.junk.application.discordfeedhub.panel.LoadingPanel;
+import com.junk.application.discordfeedhub.panel.LogPanel;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.BorderLayout;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.swing.Box;
 import javax.swing.UIManager;
 
@@ -47,7 +50,7 @@ public class Main extends javax.swing.JFrame {
             );
             return result;
         } catch (IOException ex) {
-            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(Main.class.getName()).log(Level.SEVERE, (String) null, ex);
             return null;
         }
     }
@@ -128,7 +131,7 @@ public class Main extends javax.swing.JFrame {
         menuView.setText("View");
 
         menuItemViewLogs.setText("View Logs");
-        menuItemViewLogs.setEnabled(false);
+        menuItemViewLogs.addActionListener(this::menuItemViewLogsActionPerformed);
         menuView.add(menuItemViewLogs);
 
         menuBarMenu.add(menuView);
@@ -179,7 +182,7 @@ public class Main extends javax.swing.JFrame {
             extendedDialog = new ExtendedDialog(this, "About", new AboutPanel());
             extendedDialog.setVisible(true);
         } catch (IOException ex) {
-            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(Main.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_menuItemAboutActionPerformed
 
@@ -192,10 +195,18 @@ public class Main extends javax.swing.JFrame {
             checkUpdatePanel.setParentDialog(extendedDialog);
             extendedDialog.setVisible(true);
         } catch (IOException ex) {
-            System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(Main.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
         
     }//GEN-LAST:event_menuItemCheckUpdatesActionPerformed
+
+    private void menuItemViewLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewLogsActionPerformed
+        ExtendedDialog extendedDialog = null;
+        LogPanel checkUpdatePanel = new LogPanel();
+        extendedDialog = new ExtendedDialog(this, "Logs", checkUpdatePanel);
+        checkUpdatePanel.setParentDialog(extendedDialog);
+        extendedDialog.setVisible(true);
+    }//GEN-LAST:event_menuItemViewLogsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel mainPanel;

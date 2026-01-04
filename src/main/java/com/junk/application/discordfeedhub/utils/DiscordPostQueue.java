@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 /**
  *
@@ -75,7 +76,7 @@ public final class DiscordPostQueue {
             );
 
         } catch (Exception ex) {
-            System.getLogger(DiscordPostQueue.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
 

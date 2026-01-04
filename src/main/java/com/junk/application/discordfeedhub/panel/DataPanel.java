@@ -1,6 +1,7 @@
 package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.ExtendedDialog;
 import com.junk.application.discordfeedhub.utils.HeaderRenderer;
 import com.junk.application.discordfeedhub.utils.RssSourceTableModel;
@@ -9,6 +10,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -156,13 +158,15 @@ public class DataPanel extends javax.swing.JPanel {
             int id = (int) dataTable.getValueAt(row, 0);
             ExtendedDialog extendedDialog = new ExtendedDialog(parent, "Update RSS Resource", new ResourcePanel(this, true, id));
             extendedDialog.setVisible(true);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ex) {
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, "No row selected from the table!", ex);
             JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void toggleButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleButtonRunActionPerformed
         if (model.getRowCount() < 1) {
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "No RSS Resource!");
             JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

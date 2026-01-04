@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *
@@ -51,8 +52,7 @@ public class DatabaseManager {
             conn.createStatement().execute(sqlRSSSource);
             conn.createStatement().execute(sqlPostedItem);
         } catch (IOException | SQLException ex) {
-            System.err.println(ex);
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
     
@@ -98,7 +98,7 @@ public class DatabaseManager {
             }
             return null;
         } catch (SQLException | IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+           DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return null;
         }
     }
@@ -118,7 +118,7 @@ public class DatabaseManager {
             return ps.executeQuery().next();
 
         } catch (SQLException | IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return false;
         }
     }
@@ -176,21 +176,21 @@ public class DatabaseManager {
             }
 
         } catch (SQLTimeoutException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.TIMEOUT,
                     "Query execution timed out",
                     ex
             );
         } catch (SQLException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),
                     ex
             );
         } catch (IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),
@@ -241,21 +241,21 @@ public class DatabaseManager {
             return DmlResult.success(affectedRows);
 
         } catch (SQLTimeoutException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.TIMEOUT,
                     "Query execution timed out",
                     ex
             );
         } catch (SQLException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),
                     ex
             );
         } catch (IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                 DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),
@@ -290,21 +290,21 @@ public class DatabaseManager {
             return DmlResult.success(affectedRows);
             
         } catch (SQLTimeoutException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.TIMEOUT,
                     "Query execution timed out",
                     ex
             );
         } catch (SQLException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                     DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),
                     ex
             );
         } catch (IOException ex) {
-            System.getLogger(DatabaseManager.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
                 DmlStatus.UNKNOWN_ERROR,
                     ex.getMessage(),

@@ -39,9 +39,9 @@ public class RSSReaderTask implements Runnable {
     @Override
     public void run() {
         try {
-            List<SyndEntry> items = getList(source.getRssUrl());
+            List<SyndEntry> items = getList(source.rssUrl());
             for (SyndEntry entry : items) {
-                if (!DatabaseManager.isPosted(source.getId(), entry.getLink())) {
+                if (!DatabaseManager.isPosted(source.id(), entry.getLink())) {
                     String sanitizedDescription = Jsoup.clean(entry.getDescription().getValue(), Safelist.none());
                     JSONObject embed = new JSONObject()
                         .put("title", entry.getTitle())
@@ -49,18 +49,15 @@ public class RSSReaderTask implements Runnable {
                         .put("description", sanitizedDescription)
                         .put("color", Utility.randomColor())
                         .put("footer", new JSONObject()
-                                .put("text", source.getTitle()));
+                                .put("text", source.title()));
                     
                     JSONObject payload = new JSONObject()
                     .put("embeds", new org.json.JSONArray().put(embed));
-                    DiscordPostQueue.enqueue(new DiscordPost(source.getDiscordWebhookUrl(), payload, source, entry));
+                    DiscordPostQueue.enqueue(new DiscordPost(source.discordWebhookUrl(), payload, source, entry));
                 }
             }
-            
-
-
         } catch (Exception ex) {
-            System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "RSS error [" + source.getTitle() + "]: " + ex.getMessage(), ex);
+            System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "RSS error [" + source.title() + "]: " + ex.getMessage(), ex);
         }
     }
 }

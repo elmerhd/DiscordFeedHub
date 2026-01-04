@@ -30,8 +30,10 @@
             <MenuItem class="javax.swing.JMenuItem" name="menuItemViewLogs">
               <Properties>
                 <Property name="text" type="java.lang.String" value="View Logs"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemViewLogsActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

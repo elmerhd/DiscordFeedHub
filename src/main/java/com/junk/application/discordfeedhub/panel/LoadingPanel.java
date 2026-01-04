@@ -8,11 +8,13 @@ import aurelienribon.tweenengine.equations.Bounce;
 import aurelienribon.tweenengine.equations.Quart;
 import com.junk.application.discordfeedhub.ui.Main;
 import com.junk.application.discordfeedhub.utils.ComponentAccessor;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -113,7 +115,7 @@ public class LoadingPanel extends javax.swing.JPanel {
             animateExplosion(baseX, baseY);
 
         } catch (Exception ex) {
-            System.getLogger(LoadingPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(LoadingPanel.class.getName()).log(Level.SEVERE, "No row selected from the table!", ex);
         }
     }
     

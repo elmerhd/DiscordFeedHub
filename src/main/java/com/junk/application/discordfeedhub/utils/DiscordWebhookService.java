@@ -4,6 +4,7 @@ import com.junk.application.discordfeedhub.model.RssSource;
 import com.rometools.rome.feed.synd.SyndEntry;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Level;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,9 +33,9 @@ public class DiscordWebhookService {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "Discord webhook failed: " + response.code());
+                DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, "Discord webhook failed: " + response.code());
             } else {
-                DatabaseManager.markAsPosted(source.getId(), UUID.randomUUID().toString(), entry.getLink());
+                DatabaseManager.markAsPosted(source.id(), UUID.randomUUID().toString(), entry.getLink());
             }
         }
     }

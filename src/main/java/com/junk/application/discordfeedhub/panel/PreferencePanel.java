@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.panel;
 
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.NumericDocumentFilter;
 import com.junk.application.discordfeedhub.utils.Preference;
 import com.junk.application.discordfeedhub.utils.StartupHelper;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
@@ -241,16 +243,8 @@ public class PreferencePanel extends javax.swing.JPanel {
     private void comboBoxThemesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxThemesItemStateChanged
         try {
             saveSettings();
-        } catch (IOException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (ClassNotFoundException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (InstantiationException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (IllegalAccessException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_comboBoxThemesItemStateChanged
 
@@ -258,7 +252,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_comboBoxFontItemStateChanged
 
@@ -266,7 +260,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_spinnerFontSizeStateChanged
 
@@ -278,7 +272,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_textFieldSchedulerIntervalKeyReleased
 
@@ -286,7 +280,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_textFieldWebhookDelayKeyReleased
 
@@ -294,7 +288,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.getLogger(PreferencePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_checkboxRunStartupActionPerformed
 

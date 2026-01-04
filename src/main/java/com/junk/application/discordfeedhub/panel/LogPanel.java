@@ -1,0 +1,196 @@
+package com.junk.application.discordfeedhub.panel;
+
+import com.junk.application.discordfeedhub.model.Log;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
+import com.junk.application.discordfeedhub.utils.Utility;
+import java.awt.Component;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.swing.JDialog;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+/**
+ *
+ * @author elmerhd
+ */
+public class LogPanel extends javax.swing.JPanel {
+    
+    private Map<String, List<Log>> treeMap = new HashMap<>();
+    private JDialog parentDialog;
+    /**
+     * Creates new form LoggerPanel
+     */
+    public LogPanel() {
+        initComponents();
+    }
+    
+    public DefaultTreeModel logsTreeModel() {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Logs");
+
+        try {
+            Properties properties = Utility.getApplicationProperty();
+
+            Path logDir = Path.of(
+                System.getProperty("user.home"),
+                properties.getProperty("app.folder"),
+                properties.getProperty("app.log.folder")
+            );
+
+            if (!Files.exists(logDir)) {
+                return new DefaultTreeModel(root);
+            }
+
+            // Sort folders newest → oldest (optional)
+            List<Path> sessionDirs = Files.list(logDir)
+                    .filter(Files::isDirectory)
+                    .sorted((a, b) -> b.getFileName().toString()
+                            .compareTo(a.getFileName().toString()))
+                    .toList();
+
+            for (Path sessionDir : sessionDirs) {
+                String dateFolder = sessionDir.getFileName().toString();
+                DefaultMutableTreeNode dateNode =
+                        new DefaultMutableTreeNode(dateFolder);
+
+                // Add .log files under the date node
+                Files.list(sessionDir)
+                        .filter(p -> p.toString().endsWith(".log"))
+                        .forEach(logFile -> {
+                            DefaultMutableTreeNode logNode =
+                                    new DefaultMutableTreeNode(logFile);
+                            dateNode.add(logNode);
+                        });
+
+                root.add(dateNode);
+            }
+
+        } catch (IOException ex) {
+            DiscordFeedHubLogger
+                    .getLogger(LogPanel.class.getName())
+                    .log(Level.SEVERE, "Failed to load log tree", ex);
+        }
+        return new DefaultTreeModel(root);
+    }
+    
+    public DefaultTreeCellRenderer logsTreeCellRenderer() {
+        DefaultTreeCellRenderer cellRenderer = new DefaultTreeCellRenderer() {
+            @Override
+            public Component getTreeCellRendererComponent(
+                    JTree tree,
+                    Object value,
+                    boolean selected,
+                    boolean expanded,
+                    boolean leaf,
+                    int row,
+                    boolean hasFocus) {
+
+                super.getTreeCellRendererComponent(
+                        tree, value, selected, expanded, leaf, row, hasFocus);
+
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+                Object obj = node.getUserObject();
+                if (obj instanceof Path path) {
+                    setText(path.getFileName().toString());
+                    setIcon(Utility.getLogIcon());
+                } else {
+                    setIcon(Utility.getDateIcon());
+                }
+                return this;
+            }
+        };
+        return cellRenderer;
+    }
+    
+    public static List<Path> findByFileExtension(Path path, String fileExtension){
+        
+        List<Path> result = null;
+        try (Stream<Path> walk = Files.walk(path)) {
+            result = walk
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.getFileName().toString().endsWith(fileExtension))
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+        }
+        return result;
+    }
+    
+    public void setParentDialog(JDialog parentDialog) {
+        this.parentDialog = parentDialog;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        scrollPaneTreeLog = new javax.swing.JScrollPane();
+        treeLog = new javax.swing.JTree();
+
+        scrollPaneTreeLog.setPreferredSize(new java.awt.Dimension(100, 362));
+
+        treeLog.setModel(logsTreeModel());
+        treeLog.setCellRenderer(logsTreeCellRenderer());
+        treeLog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeLogMouseClicked(evt);
+            }
+        });
+        scrollPaneTreeLog.setViewportView(treeLog);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollPaneTreeLog, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollPaneTreeLog, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void treeLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeLogMouseClicked
+        if (evt.getClickCount() == 2) {
+            TreePath path = treeLog.getSelectionPath();
+            if (path == null) return;
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if (node.getUserObject() instanceof Path file) {
+                try {
+                    Desktop.getDesktop().open(file.toFile());
+                } catch (IOException ex) {
+                    DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_treeLogMouseClicked
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane scrollPaneTreeLog;
+    private javax.swing.JTree treeLog;
+    // End of variables declaration//GEN-END:variables
+}

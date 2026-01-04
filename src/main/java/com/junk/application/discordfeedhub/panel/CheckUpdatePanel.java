@@ -1,6 +1,7 @@
 package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.UpdateInfo;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.GitHubUpdateChecker;
 import com.junk.application.discordfeedhub.utils.JarUpdateInstaller;
 import com.junk.application.discordfeedhub.utils.StartupHelper;
@@ -8,6 +9,7 @@ import com.junk.application.discordfeedhub.utils.Utility;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.logging.Level;
 import javax.swing.JDialog;
 
 /**
@@ -46,7 +48,7 @@ public class CheckUpdatePanel extends javax.swing.JPanel {
                 setCheckingUpdates(false);
                 setUpdateInfo(info);
             } catch (IOException ex) {
-                System.getLogger(CheckUpdatePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
             }
         }
     };
@@ -206,15 +208,15 @@ public class CheckUpdatePanel extends javax.swing.JPanel {
                         Thread.sleep(Duration.ofSeconds(1));
                         System.exit(0);
                     } catch (InterruptedException ex) {
-                        System.getLogger(CheckUpdatePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                        DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
                     }
                 }).start();
                 
             }
         } catch (IOException ex) {
-            System.getLogger(CheckUpdatePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         } catch (Exception ex) {
-            System.getLogger(CheckUpdatePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_buttonDownloadInstallActionPerformed
 
