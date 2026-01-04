@@ -1,11 +1,13 @@
 package com.junk.application.discordfeedhub.utils;
 
 import com.junk.application.discordfeedhub.model.UpdateInfo;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import java.io.*;
 
 /**
  *
