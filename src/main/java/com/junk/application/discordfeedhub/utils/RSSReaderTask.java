@@ -45,14 +45,13 @@ public class RSSReaderTask implements Runnable {
                         .put("title", entry.getTitle())
                         .put("url", entry.getLink())
                         .put("description", entry.getDescription().getValue())
-                        .put("color", DiscordPostQueue.randomColor())
+                        .put("color", Utility.randomColor())
                         .put("footer", new JSONObject()
                                 .put("text", source.getTitle()));
                     
                     JSONObject payload = new JSONObject()
                     .put("embeds", new org.json.JSONArray().put(embed));
                     DiscordPostQueue.enqueue(new DiscordPost(source.getDiscordWebhookUrl(), payload, source, entry));
-                    //DiscordWebhookService.send(source.getDiscordWebhookUrl(), payload, source, entry);
                 }
             }
             

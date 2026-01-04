@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -252,5 +253,10 @@ public class Utility {
         } while (size >= 1024 && unitIndex < units.length - 1);
 
         return String.format("%.2f %s", size, units[unitIndex]);
+    }
+
+    // Helper to generate random Discord color
+    public static int randomColor() {
+        return ThreadLocalRandom.current().nextInt(0xFFFFFF);
     }
 }

@@ -85,11 +85,4 @@ public final class DiscordPostQueue {
         }
         running.set(false);
     }
-
-    // Helper to generate random Discord color
-    public static int randomColor() {
-        return ThreadLocalRandom.current().nextInt(0xFFFFFF);
-    }
-    
 }
-
