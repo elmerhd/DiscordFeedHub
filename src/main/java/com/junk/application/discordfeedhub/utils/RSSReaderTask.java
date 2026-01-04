@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 
 /**
  *
@@ -40,11 +42,11 @@ public class RSSReaderTask implements Runnable {
             List<SyndEntry> items = getList(source.getRssUrl());
             for (SyndEntry entry : items) {
                 if (!DatabaseManager.isPosted(source.getId(), entry.getLink())) {
-                    
+                    String sanitizedDescription = Jsoup.clean(entry.getDescription().getValue(), Safelist.none());
                     JSONObject embed = new JSONObject()
                         .put("title", entry.getTitle())
                         .put("url", entry.getLink())
-                        .put("description", entry.getDescription().getValue())
+                        .put("description", sanitizedDescription)
                         .put("color", Utility.randomColor())
                         .put("footer", new JSONObject()
                                 .put("text", source.getTitle()));
