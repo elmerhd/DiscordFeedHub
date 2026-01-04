@@ -44,14 +44,15 @@ java -version
 ## 📝 TODO
 
 ### UI
-- [ ] Add other look and feel
+- [x] Add other look and feel
 - [ ] Improve notifications
 
 ### ⏳ Background Monitoring
-- [ ] Periodically check RSS feeds without user interaction  
+- [x] Periodically check RSS feeds without user interaction  
 - [x] Run checks on a timer or scheduler  
 - [x] Allow start/stop monitoring from the UI
-- [ ] Add Configuration settings for scheduler
+- [x] Add Configuration settings for scheduler
+- [x] Add logs viewer
 
 ### 🔔 Webhook Enhancements
 - [ ] Improve Discord embed formatting  
