@@ -39,7 +39,7 @@ public class DatabaseManagerTest {
         assertFalse(sources.isEmpty(), "Sources list should not be empty");
 
         // Save the first source id for later tests
-        testSourceId = sources.get(0).getId();
+        testSourceId = sources.get(0).id();
     }
 
     @Test
@@ -47,7 +47,7 @@ public class DatabaseManagerTest {
     void testGetRssResourceById() {
         RssSource source = DatabaseManager.getRssResourceById(testSourceId);
         assertNotNull(source, "Should return RSS source by ID");
-        assertEquals(testSourceId, source.getId());
+        assertEquals(testSourceId, source.id());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DatabaseManagerTest {
         assertTrue(result.isSuccess(), "Should successfully update RSS source");
 
         RssSource updated = DatabaseManager.getRssResourceById(testSourceId);
-        assertEquals("Updated Feed", updated.getTitle());
+        assertEquals("Updated Feed", updated.title());
     }
 
     @Test

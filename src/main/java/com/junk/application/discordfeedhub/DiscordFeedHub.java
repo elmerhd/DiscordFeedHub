@@ -4,6 +4,7 @@ import com.junk.application.discordfeedhub.ui.Main;
 import com.junk.application.discordfeedhub.utils.ApplicationTaskbar;
 import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.Constants;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,13 +30,12 @@ public class DiscordFeedHub {
     public void launchApplication(String [] args){
         try {
             List<String> argsList = Arrays.asList(args);
-            System.out.println(argsList);
+            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"app args :" + argsList.toString());
             Properties applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
             Utility.installLookAndFeels();
             Utility.createApplicationFolder(applicationProperty);
-            Utility.setupLogger();
             Utility.checkSettings();
             
             Main mainUI = new Main();
@@ -47,9 +48,7 @@ public class DiscordFeedHub {
             Toolkit defaultToolkit = Utility.getDefaultToolkit();
             Image macImageLogo = defaultToolkit.getImage(Utility.getMacApplicationImageURL());
             Image systemTrayImageLogo = defaultToolkit.getImage(Utility.getSystemTrayImageURL());
-            
             // setup tray icon
-            
             new ApplicationTray(
                     applicationName, 
                     systemTrayImageLogo, 
@@ -68,17 +67,15 @@ public class DiscordFeedHub {
             } else {
                 mainUI.setVisible(true);
             }
-            
             for (String arg : argsList) {
                 if (arg.contains(Constants.STARTUP_ARGS_DELETE)) {
                     String path = arg.substring(Constants.STARTUP_ARGS_DELETE.length());
                     Utility.safeDeleteFile(new File(path));
                 }
             }
-            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
-            System.getLogger(DiscordFeedHub.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
 }

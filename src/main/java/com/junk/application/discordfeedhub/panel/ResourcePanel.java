@@ -3,10 +3,12 @@ package com.junk.application.discordfeedhub.panel;
 import com.junk.application.discordfeedhub.model.RssSource;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.model.DmlResult;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.ExtendedPanelModel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -56,11 +58,11 @@ public class ResourcePanel extends ExtendedPanelModel {
     
     public void setFieldValues(int id) {
         RssSource rssSource = DatabaseManager.getRssResourceById(id);
-        textFieldTitle.setText(rssSource.getTitle());
-        textFieldWebsiteUrl.setText(rssSource.getWebsiteUrl());
-        textFieldRssUrl.setText(rssSource.getRssUrl());
-        textFieldDiscordWebhook.setText(rssSource.getDiscordWebhookUrl());
-        checkboxEnabled.setSelected(rssSource.isEnabled());
+        textFieldTitle.setText(rssSource.title());
+        textFieldWebsiteUrl.setText(rssSource.websiteUrl());
+        textFieldRssUrl.setText(rssSource.rssUrl());
+        textFieldDiscordWebhook.setText(rssSource.discordWebhookUrl());
+        checkboxEnabled.setSelected(rssSource.enabled());
     }
     
     private boolean isUpdate() {
@@ -207,9 +209,10 @@ public class ResourcePanel extends ExtendedPanelModel {
             try {
                 dataPanel.loadSources();
             } catch (SQLException | IOException ex) {
-                System.getLogger(ResourcePanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                DiscordFeedHubLogger.getLogger(ResourcePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
             }
         } else {
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.INFO, "One or More fields is required");
             JOptionPane.showMessageDialog(this, "One or More fields is required", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonSaveActionPerformed

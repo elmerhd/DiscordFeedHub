@@ -1,8 +1,12 @@
 package com.junk.application.discordfeedhub.utils;
 
-
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 /**
  *
@@ -62,7 +66,7 @@ public final class DiscordPostQueue {
                 shutdown();
                 return;
             }
-
+            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.SEVERE, () -> "Sending item to discord : " + post.getEntry());
             DiscordWebhookService.send(
                     post.getWebhookUrl(),
                     post.getPayload(),
@@ -71,7 +75,7 @@ public final class DiscordPostQueue {
             );
 
         } catch (Exception ex) {
-            System.getLogger(DiscordPostQueue.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
 
@@ -81,11 +85,4 @@ public final class DiscordPostQueue {
         }
         running.set(false);
     }
-
-    // Helper to generate random Discord color
-    public static int randomColor() {
-        return ThreadLocalRandom.current().nextInt(0xFFFFFF);
-    }
-    
 }
-

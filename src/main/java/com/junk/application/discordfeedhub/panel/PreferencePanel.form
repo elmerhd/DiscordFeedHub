@@ -203,6 +203,9 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkboxRunStartup">
       <Properties>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Utility.getPreference().isRunningAtStartup()" type="code"/>
+        </Property>
         <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="StartupHelper.isWindows()" type="code"/>
         </Property>

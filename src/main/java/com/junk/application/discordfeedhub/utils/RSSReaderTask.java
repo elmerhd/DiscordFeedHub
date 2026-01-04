@@ -11,7 +11,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 
 /**
  *
@@ -37,29 +40,29 @@ public class RSSReaderTask implements Runnable {
     @Override
     public void run() {
         try {
-            List<SyndEntry> items = getList(source.getRssUrl());
+            List<SyndEntry> items = getList(source.rssUrl());
             for (SyndEntry entry : items) {
-                if (!DatabaseManager.isPosted(source.getId(), entry.getLink())) {
-                    
+                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Item found => " +entry.getTitle()));
+                boolean isPosted = DatabaseManager.isPosted(source.id(), entry.getLink());
+                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Checking item in db exist? ("+isPosted+") "));
+                if (!isPosted) {
+                    String sanitizedDescription = Jsoup.clean(entry.getDescription().getValue(), Safelist.none());
                     JSONObject embed = new JSONObject()
                         .put("title", entry.getTitle())
                         .put("url", entry.getLink())
-                        .put("description", entry.getDescription().getValue())
-                        .put("color", DiscordPostQueue.randomColor())
+                        .put("description", sanitizedDescription)
+                        .put("color", Utility.randomColor())
                         .put("footer", new JSONObject()
-                                .put("text", source.getTitle()));
+                                .put("text", source.title()));
                     
                     JSONObject payload = new JSONObject()
                     .put("embeds", new org.json.JSONArray().put(embed));
-                    DiscordPostQueue.enqueue(new DiscordPost(source.getDiscordWebhookUrl(), payload, source, entry));
-                    //DiscordWebhookService.send(source.getDiscordWebhookUrl(), payload, source, entry);
+                    DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Queueing item : => " + entry.getTitle()));
+                    DiscordPostQueue.enqueue(new DiscordPost(source.discordWebhookUrl(), payload, source, entry));
                 }
             }
-            
-
-
         } catch (Exception ex) {
-            System.getLogger(DiscordWebhookService.class.getName()).log(System.Logger.Level.ERROR, "RSS error [" + source.getTitle() + "]: " + ex.getMessage(), ex);
+            DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
 }

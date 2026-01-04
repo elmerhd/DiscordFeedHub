@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Linear;
 import com.junk.application.discordfeedhub.utils.ComponentAccessor;
+import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Color;
@@ -19,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -118,7 +120,7 @@ public class AboutPanel extends javax.swing.JPanel {
                 try {
                     Desktop.getDesktop().browse(new URI(e.getURL().toString()));
                 } catch (Exception ex) {
-                    System.getLogger(AboutPanel.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
                 }
             }
         });

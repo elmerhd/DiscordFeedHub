@@ -3,7 +3,6 @@ package com.junk.application.discordfeedhub.utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -58,7 +57,7 @@ public class StartupHelper {
 
         try {
             String content = "@echo off\n" +
-                    "start javaw -jar \"" + jarFile.getAbsolutePath() + "\" --minimized\n";
+                    "start javaw -jar \"" + jarFile.getAbsolutePath() + "\"" + Constants.STARTUP_ARGS_MINIMIZED;
 
             try (FileWriter writer = new FileWriter(batchFile)) {
                 writer.write(content);

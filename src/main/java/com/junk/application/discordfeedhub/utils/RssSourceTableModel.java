@@ -41,12 +41,12 @@ public class RssSourceTableModel extends AbstractTableModel {
         RssSource r = data.get(row);
 
         return switch (col) {
-            case 0 -> r.getId();
-            case 1 -> r.getTitle();
-            case 2 -> r.getWebsiteUrl();
-            case 3 -> r.getRssUrl();
-            case 4 -> r.getDiscordWebhookUrl();
-            case 5 -> r.isEnabled();
+            case 0 -> r.id();
+            case 1 -> r.title();
+            case 2 -> r.websiteUrl();
+            case 3 -> r.rssUrl();
+            case 4 -> r.discordWebhookUrl();
+            case 5 -> r.enabled();
             default -> null;
         };
     }

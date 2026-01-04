@@ -10,10 +10,8 @@ import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -23,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -52,7 +51,7 @@ public class Utility {
         }
     }
     
-    public static Properties getApplicationProperty() throws IOException {
+    public static Properties getApplicationProperty() throws IOException{
         InputStream inputstream = DiscordFeedHub.class.getResourceAsStream("app.properties");
         Properties applicationProperty = new Properties();
         applicationProperty.load(inputstream);
@@ -107,6 +106,14 @@ public class Utility {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/download.svg");
     }
     
+    public static FlatSVGIcon getDateIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/date.svg");
+    }
+    
+    public static FlatSVGIcon getLogIcon() {
+        return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/log.svg");
+    }
+    
     public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
         if (dmlResult.isSuccess()) {
             JOptionPane.showMessageDialog(extendedPanelModel, "Success!", "Status", JOptionPane.INFORMATION_MESSAGE);
@@ -128,19 +135,6 @@ public class Utility {
         );
         applicationFolder = appDir.toAbsolutePath().toString();
         Files.createDirectories(appDir);
-    }
-    
-    public static void setupLogger() throws IOException, FileNotFoundException {
-        Properties applicationProperty = Utility.getApplicationProperty();
-        String applicationName = applicationProperty.getProperty("app.name");
-        String template = "{0}\\{1}.log";
-        String result = MessageFormat.format(
-                template,
-                Utility.getApplicationFolder(),
-                applicationName.toLowerCase()
-        );
-        PrintStream fileOut = new PrintStream(result);
-        System.setErr(fileOut);
     }
     
     public static String getApplicationFolder() {
@@ -252,5 +246,10 @@ public class Utility {
         } while (size >= 1024 && unitIndex < units.length - 1);
 
         return String.format("%.2f %s", size, units[unitIndex]);
+    }
+
+    // Helper to generate random Discord color
+    public static int randomColor() {
+        return ThreadLocalRandom.current().nextInt(0xFFFFFF);
     }
 }
