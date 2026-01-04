@@ -13,7 +13,6 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 /**
