@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -26,6 +27,13 @@ public class ExtendedDialog extends JDialog{
         this.pack();
         this.setLocationRelativeTo(parent);
         this.addEscapeDisposeSupport();
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                DiscordFeedHubLogger.getLogger(ExtendedDialog.class.getName()).log(Level.INFO, "Closing popup dialog");
+                ExtendedDialog.this.dispose();
+            }
+        });
     }
     
     public void addEscapeDisposeSupport() {
@@ -35,9 +43,11 @@ public class ExtendedDialog extends JDialog{
         this.getRootPane().getActionMap().put("ESCAPE", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ExtendedDialog.this.dispose();
                 DiscordFeedHubLogger.getLogger(ExtendedDialog.class.getName()).log(Level.INFO, "Closing popup dialog");
+                ExtendedDialog.this.dispose();
             }
         });
     }
+    
+    
 }
