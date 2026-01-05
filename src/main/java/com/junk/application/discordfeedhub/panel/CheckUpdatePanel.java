@@ -26,6 +26,7 @@ public class CheckUpdatePanel extends ExtendedPanel {
      */
     public CheckUpdatePanel() throws IOException {
         super();
+        versionCheckerThread.start();
     }
     
     @Override
@@ -33,7 +34,6 @@ public class CheckUpdatePanel extends ExtendedPanel {
         DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "Initializing Components");
         initComponents();
         setUpdateInfo(null);
-        versionCheckerThread.start();
     }
     
     public Thread versionCheckerThread = new Thread(() -> {

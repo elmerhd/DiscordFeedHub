@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -27,7 +26,6 @@ import javax.swing.text.AbstractDocument;
 public class PreferencePanel extends ExtendedPanel {
     
     private File preferenceFile;
-    private JDialog parentDialog;
     /**
      * Creates new form PreferencePanel
      */
@@ -264,10 +262,6 @@ public class PreferencePanel extends ExtendedPanel {
         }
     }//GEN-LAST:event_spinnerFontSizeStateChanged
 
-    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
-        parentDialog.dispose();
-    }//GEN-LAST:event_buttonCloseActionPerformed
-
     private void textFieldSchedulerIntervalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSchedulerIntervalKeyReleased
         try {
             saveSettings();
@@ -291,6 +285,10 @@ public class PreferencePanel extends ExtendedPanel {
             DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_checkboxRunStartupActionPerformed
+
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
+        this.closeParentDialog();
+    }//GEN-LAST:event_buttonCloseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

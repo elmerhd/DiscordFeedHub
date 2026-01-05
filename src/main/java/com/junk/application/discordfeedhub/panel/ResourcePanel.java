@@ -21,30 +21,20 @@ public class ResourcePanel extends ExtendedPanel {
     private boolean isUpdate = false;
     private DataPanel dataPanel = null;
     private int id;
-
-    /**
-     * Creates new form NewResource
-     */
-    public ResourcePanel(DataPanel parentDataPanel) {
-        super();
-        this.dataPanel = parentDataPanel;
-        initComponents();
-        initPlaceholders();
-    }
     
     public ResourcePanel(DataPanel parentDataPanel, boolean isUpdate, int id) {
         super();
         this.dataPanel = parentDataPanel;
         this.isUpdate = isUpdate;
         this.id = id;
+        initComponents();
+        initPlaceholders();
+        setFieldValues(id);
     }
     
     @Override
     public void onInitializedPanel() {
         DiscordFeedHubLogger.getLogger(ResourcePanel.class.getName()).log(Level.INFO, "Initializing Components");
-        initComponents();
-        initPlaceholders();
-        setFieldValues(id);
     }
     
     private void initPlaceholders() {
@@ -64,12 +54,14 @@ public class ResourcePanel extends ExtendedPanel {
     }
     
     public void setFieldValues(int id) {
-        RssSource rssSource = DatabaseManager.getRssResourceById(id);
-        textFieldTitle.setText(rssSource.title());
-        textFieldWebsiteUrl.setText(rssSource.websiteUrl());
-        textFieldRssUrl.setText(rssSource.rssUrl());
-        textFieldDiscordWebhook.setText(rssSource.discordWebhookUrl());
-        checkboxEnabled.setSelected(rssSource.enabled());
+        if (isUpdate) {
+            RssSource rssSource = DatabaseManager.getRssResourceById(id);
+            textFieldTitle.setText(rssSource.title());
+            textFieldWebsiteUrl.setText(rssSource.websiteUrl());
+            textFieldRssUrl.setText(rssSource.rssUrl());
+            textFieldDiscordWebhook.setText(rssSource.discordWebhookUrl());
+            checkboxEnabled.setSelected(rssSource.enabled());
+        }
     }
     
     private boolean isUpdate() {

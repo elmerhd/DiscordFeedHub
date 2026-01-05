@@ -148,7 +148,7 @@ public class DataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
-        ExtendedDialog extendedDialog = new ExtendedDialog(parent, "New RSS Resource", new ResourcePanel(this));
+        ExtendedDialog extendedDialog = new ExtendedDialog(parent, "New RSS Resource", new ResourcePanel(this, false, 0));
         extendedDialog.setVisible(true);
     }//GEN-LAST:event_buttonNewActionPerformed
 
