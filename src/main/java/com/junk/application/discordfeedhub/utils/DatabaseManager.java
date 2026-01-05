@@ -25,6 +25,7 @@ public class DatabaseManager {
     static {
         
         try {
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, "Creating table if not exist!");
             Connection conn = DriverManager.getConnection(getDatabaseConnectionURL());
             String sqlRSSSource = """
                 CREATE TABLE IF NOT EXISTS rss_source (
@@ -77,6 +78,7 @@ public class DatabaseManager {
     
     
     public static RssSource getRssResourceById(int id) {
+        DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Getting resource by id : " +id);
         String getRssSourceSql = """
             SELECT id, 
                 title, 
@@ -98,12 +100,13 @@ public class DatabaseManager {
             }
             return null;
         } catch (SQLException | IOException ex) {
-           DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return null;
         }
     }
     
     public static boolean isPosted(int sourceId, String itemLink) {
+        DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Checking posted item by source id : " +sourceId + " item link : " +itemLink);
         String countSql = """
             SELECT id
             FROM posted_item
@@ -146,9 +149,10 @@ public class DatabaseManager {
 
             countPs.setString(1, rssUrl);
             countPs.setString(2, discordWebhookUrl);
-
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Checking resource : "+rssUrl+ " webhook : " + discordWebhookUrl);
             try (ResultSet rs = countPs.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
+                    DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Resource exist : "+rssUrl+ " webhook : " + discordWebhookUrl);
                     return DmlResult.failure(
                             DmlStatus.NO_ROWS_AFFECTED,
                             "RSS URL & Discord Webhook URL already exist",
@@ -164,7 +168,7 @@ public class DatabaseManager {
                 insertPs.setString(4, discordWebhookUrl);
                 
                 int affectedRows = insertPs.executeUpdate();
-
+                DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Resource added : "+rssUrl+ " webhook : " + discordWebhookUrl);
                 if (affectedRows == 0) {
                     return DmlResult.failure(
                             DmlStatus.NO_ROWS_AFFECTED,
@@ -217,7 +221,7 @@ public class DatabaseManager {
                 enabled = ?
             WHERE id = ?
         """;
-
+        DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Updating resource : "+title+ " webhook : " + webhookUrl);
         try (Connection conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(updateSql)) {
 
@@ -229,7 +233,7 @@ public class DatabaseManager {
             ps.setInt(6, id);
 
             int affectedRows = ps.executeUpdate();
-
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Resource updated : "+title+ " webhook : " + webhookUrl);
             if (affectedRows == 0) {
                 return DmlResult.failure(
                         DmlStatus.NO_ROWS_AFFECTED,
@@ -237,9 +241,8 @@ public class DatabaseManager {
                         null
                 );
             }
-
+            
             return DmlResult.success(affectedRows);
-
         } catch (SQLTimeoutException ex) {
             DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, (String) null, ex);
             return DmlResult.failure(
@@ -270,7 +273,6 @@ public class DatabaseManager {
             (rss_source_id, item_guid, item_link)
             VALUES (?, ?, ?)
         """;
-
         try (Connection c = getConnection();
             PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -278,7 +280,7 @@ public class DatabaseManager {
             ps.setString(2, guid);
             ps.setString(3, itemLink);
             int affectedRows = ps.executeUpdate();
-            
+            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Marking item as posted : "+sourceId+ " item Link : " + itemLink);
             if (affectedRows == 0) {
                 return DmlResult.failure(
                         DmlStatus.NO_ROWS_AFFECTED,
@@ -318,6 +320,7 @@ public class DatabaseManager {
     }
     
     public static List<RssSource> loadSources(boolean enabledOnly) throws SQLException, IOException {
+        DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Checking resources : enabled only = " +enabledOnly);
         List<RssSource> list = new ArrayList<>();
         
         String sql = """

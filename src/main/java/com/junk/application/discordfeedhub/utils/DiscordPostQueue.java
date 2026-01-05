@@ -66,7 +66,7 @@ public final class DiscordPostQueue {
                 shutdown();
                 return;
             }
-            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.SEVERE, () -> "Sending item to discord : " + post.getEntry());
+            DiscordFeedHubLogger.getLogger(DiscordPostQueue.class.getName()).log(Level.INFO, () -> "Sending item to discord : " + post.getEntry());
             DiscordWebhookService.send(
                     post.getWebhookUrl(),
                     post.getPayload(),
