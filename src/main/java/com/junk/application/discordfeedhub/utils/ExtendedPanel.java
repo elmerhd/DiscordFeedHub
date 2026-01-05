@@ -9,8 +9,12 @@ import javax.swing.SwingUtilities;
  *
  * @author elmerhd
  */
-public class ExtendedPanelModel extends JPanel implements IExtendedPanel {
+public abstract class ExtendedPanel extends JPanel implements IExtendedPanel {
 
+    public ExtendedPanel() {
+        onInitializedPanel();
+    }
+    
     @Override
     public void closeParentDialog() {
         Window window = SwingUtilities.getWindowAncestor(this);
