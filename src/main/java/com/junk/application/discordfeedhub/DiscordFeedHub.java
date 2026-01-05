@@ -28,10 +28,11 @@ public class DiscordFeedHub {
     }
     
     public void launchApplication(String [] args){
+        Properties applicationProperty = null;
         try {
             List<String> argsList = Arrays.asList(args);
             DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"app args :" + argsList.toString());
-            Properties applicationProperty = Utility.getApplicationProperty();
+            applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
             Utility.installLookAndFeels();
@@ -74,7 +75,7 @@ public class DiscordFeedHub {
                 }
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "Unable to start application", applicationProperty.getProperty("app.name"), JOptionPane.ERROR_MESSAGE);
             DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
