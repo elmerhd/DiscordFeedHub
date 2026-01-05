@@ -2,6 +2,7 @@ package com.junk.application.discordfeedhub.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -35,6 +36,7 @@ public class ExtendedDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 ExtendedDialog.this.dispose();
+                DiscordFeedHubLogger.getLogger(ExtendedDialog.class.getName()).log(Level.INFO, "Closing popup dialog");
             }
         });
     }
