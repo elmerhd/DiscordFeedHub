@@ -1,6 +1,7 @@
 package com.junk.application.discordfeedhub;
 
 import com.junk.application.discordfeedhub.ui.Main;
+import com.junk.application.discordfeedhub.utils.InstanceChecker;
 import com.junk.application.discordfeedhub.utils.ApplicationTaskbar;
 import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.Constants;
@@ -38,6 +39,18 @@ public class DiscordFeedHub {
             Utility.installLookAndFeels();
             Utility.createApplicationFolder(applicationProperty);
             Utility.checkSettings();
+            if (!InstanceChecker.acquireLock(applicationProperty)) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    applicationProperty.get("app.name")+" is already running.",
+                    "Already Running",
+                    JOptionPane.WARNING_MESSAGE
+                );
+                System.exit(0);
+            }
+
+            Runtime.getRuntime().addShutdownHook(new Thread(InstanceChecker::releaseLock)
+            );
             
             Main mainUI = new Main();
             String applicationName = applicationProperty.getProperty("app.name");
