@@ -228,8 +228,20 @@ public class Utility {
         }
     }
     
-    public static boolean safeDeleteFile(File fileToDelete) {
-        return fileToDelete != null && fileToDelete.exists() && fileToDelete.delete();
+    public static void safeDeleteFile(File fileToDelete) {
+        new Thread(() -> {
+            try {
+                if (!fileToDelete.exists()) {
+                    return;
+                }
+                while (!fileToDelete.delete()) {                
+                    fileToDelete.delete();
+                    DiscordFeedHubLogger.getLogger(Utility.class.getName()).log(Level.INFO, () -> "Deleting file  : " +fileToDelete.getAbsolutePath());
+                }
+            } catch (Exception ex) {
+                DiscordFeedHubLogger.getLogger(Utility.class.getName()).log(Level.SEVERE, (String) null, ex);
+            }
+        }).start();
     }
     
     public static String formatFileSize(long bytes) {
