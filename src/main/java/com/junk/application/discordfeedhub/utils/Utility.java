@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -46,7 +47,7 @@ public class Utility {
         try {
             return new ImageIcon(getSystemTrayImageURL()).getImage();
         } catch (URISyntaxException ex) {
-            System.getLogger(Utility.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(Utility.class.getName()).log(Level.SEVERE, (String) null, ex);
             return null;
         }
     }
@@ -114,7 +115,7 @@ public class Utility {
         return new FlatSVGIcon("com/junk/application/discordfeedhub/icons/log.svg");
     }
     
-    public static void checkStatus(ExtendedPanelModel extendedPanelModel, DmlResult dmlResult) {
+    public static void checkStatus(ExtendedPanel extendedPanelModel, DmlResult dmlResult) {
         if (dmlResult.isSuccess()) {
             JOptionPane.showMessageDialog(extendedPanelModel, "Success!", "Status", JOptionPane.INFORMATION_MESSAGE);
             extendedPanelModel.closeParentDialog();
@@ -223,7 +224,7 @@ public class Utility {
                 return null; // running from IDE
             }
         } catch (URISyntaxException ex) {
-            System.getLogger(Utility.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(Utility.class.getName()).log(Level.SEVERE, (String) null, ex);
             return null;
         }
     }
