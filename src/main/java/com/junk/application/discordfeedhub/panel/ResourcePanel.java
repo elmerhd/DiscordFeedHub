@@ -4,7 +4,7 @@ import com.junk.application.discordfeedhub.model.RssSource;
 import com.junk.application.discordfeedhub.utils.DatabaseManager;
 import com.junk.application.discordfeedhub.model.DmlResult;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
-import com.junk.application.discordfeedhub.utils.ExtendedPanelModel;
+import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author elmerhd
  */
-public class ResourcePanel extends ExtendedPanelModel {
+public class ResourcePanel extends ExtendedPanel {
     
     private boolean isUpdate = false;
     private DataPanel dataPanel = null;
@@ -26,15 +26,22 @@ public class ResourcePanel extends ExtendedPanelModel {
      * Creates new form NewResource
      */
     public ResourcePanel(DataPanel parentDataPanel) {
+        super();
         this.dataPanel = parentDataPanel;
         initComponents();
         initPlaceholders();
     }
     
     public ResourcePanel(DataPanel parentDataPanel, boolean isUpdate, int id) {
+        super();
         this.dataPanel = parentDataPanel;
         this.isUpdate = isUpdate;
         this.id = id;
+    }
+    
+    @Override
+    public void onInitializedPanel() {
+        DiscordFeedHubLogger.getLogger(ResourcePanel.class.getName()).log(Level.INFO, "Initializing Components");
         initComponents();
         initPlaceholders();
         setFieldValues(id);
@@ -212,7 +219,7 @@ public class ResourcePanel extends ExtendedPanelModel {
                 DiscordFeedHubLogger.getLogger(ResourcePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
             }
         } else {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.INFO, "One or More fields is required");
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "One or More fields is required");
             JOptionPane.showMessageDialog(this, "One or More fields is required", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
