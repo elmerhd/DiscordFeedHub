@@ -6,7 +6,6 @@ import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.Constants;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.InstanceChecker;
-import com.junk.application.discordfeedhub.utils.SingleInstanceManager;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
