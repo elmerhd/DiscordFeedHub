@@ -50,4 +50,3 @@ public final class InstanceChecker {
         } catch (IOException ignored) {}
     }
 }
-
