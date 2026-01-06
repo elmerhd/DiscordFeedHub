@@ -45,7 +45,7 @@ public class CheckUpdatePanel extends ExtendedPanel {
             if (info != null) {
                 DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, () -> info.version() + " is available!!!");
                 this.labelStatus.setText("An update is available!");
-                this.buttonDownloadInstall.setEnabled(hasDownloadURL());
+                this.buttonDownloadRestart.setEnabled(hasDownloadURL());
             } else {
                 this.labelStatus.setText("App is up to date!");
             }
@@ -147,7 +147,7 @@ public class CheckUpdatePanel extends ExtendedPanel {
 
         progressBarStatus = new javax.swing.JProgressBar();
         buttonClose = new javax.swing.JButton();
-        buttonDownloadInstall = new javax.swing.JButton();
+        buttonDownloadRestart = new javax.swing.JButton();
         labelStatus = new javax.swing.JLabel();
         labelVersion = new javax.swing.JLabel();
         labelDate = new javax.swing.JLabel();
@@ -161,10 +161,10 @@ public class CheckUpdatePanel extends ExtendedPanel {
         buttonClose.setText("Close");
         buttonClose.addActionListener(this::buttonCloseActionPerformed);
 
-        buttonDownloadInstall.setIcon(Utility.getDownloadIcon());
-        buttonDownloadInstall.setText("Download & Install");
-        buttonDownloadInstall.setEnabled(hasDownloadURL());
-        buttonDownloadInstall.addActionListener(this::buttonDownloadInstallActionPerformed);
+        buttonDownloadRestart.setIcon(Utility.getDownloadIcon());
+        buttonDownloadRestart.setText("Download & Restart");
+        buttonDownloadRestart.setEnabled(hasDownloadURL());
+        buttonDownloadRestart.addActionListener(this::buttonDownloadRestartActionPerformed);
 
         labelStatus.setText(" ");
 
@@ -181,8 +181,8 @@ public class CheckUpdatePanel extends ExtendedPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(294, Short.MAX_VALUE)
-                .addComponent(buttonDownloadInstall)
+                .addContainerGap(289, Short.MAX_VALUE)
+                .addComponent(buttonDownloadRestart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonClose)
                 .addGap(5, 5, 5))
@@ -215,7 +215,7 @@ public class CheckUpdatePanel extends ExtendedPanel {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonClose)
-                    .addComponent(buttonDownloadInstall))
+                    .addComponent(buttonDownloadRestart))
                 .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -224,17 +224,17 @@ public class CheckUpdatePanel extends ExtendedPanel {
         closeParentDialog();
     }//GEN-LAST:event_buttonCloseActionPerformed
 
-    private void buttonDownloadInstallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDownloadInstallActionPerformed
-        buttonDownloadInstall.setEnabled(false);
+    private void buttonDownloadRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDownloadRestartActionPerformed
+        buttonDownloadRestart.setEnabled(false);
         progressBarStatus.setIndeterminate(false);
         progressBarStatus.setStringPainted(true);
         progressBarStatus.setVisible(true);
         downloadThread.start();
-    }//GEN-LAST:event_buttonDownloadInstallActionPerformed
+    }//GEN-LAST:event_buttonDownloadRestartActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonClose;
-    private javax.swing.JButton buttonDownloadInstall;
+    private javax.swing.JButton buttonDownloadRestart;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelDownloads;
     private javax.swing.JLabel labelFileSize;
