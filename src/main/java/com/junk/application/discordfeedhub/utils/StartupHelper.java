@@ -59,7 +59,7 @@ public class StartupHelper {
 
         try {
             String content = "@echo off\n" +
-                    "start javaw -jar \"" + jarFile.getAbsolutePath() + "\"" + Constants.STARTUP_ARGS_MINIMIZED;
+                    "start javaw -jar \"" + jarFile.getAbsolutePath() + "\" " + Constants.STARTUP_ARGS_MINIMIZED;
 
             try (FileWriter writer = new FileWriter(batchFile)) {
                 writer.write(content);
