@@ -5,6 +5,7 @@ import com.junk.application.discordfeedhub.utils.ApplicationTaskbar;
 import com.junk.application.discordfeedhub.utils.ApplicationTray;
 import com.junk.application.discordfeedhub.utils.Constants;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
+import com.junk.application.discordfeedhub.utils.InstanceChecker;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -28,15 +30,27 @@ public class DiscordFeedHub {
     }
     
     public void launchApplication(String [] args){
+        Properties applicationProperty = null;
         try {
             List<String> argsList = Arrays.asList(args);
             DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"app args :" + argsList.toString());
-            Properties applicationProperty = Utility.getApplicationProperty();
+            applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
             Utility.installLookAndFeels();
             Utility.createApplicationFolder(applicationProperty);
             Utility.checkSettings();
+            if (!InstanceChecker.acquireLock(applicationProperty)) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    applicationProperty.get("app.name")+" is already running.",
+                    "Already Running",
+                    JOptionPane.WARNING_MESSAGE
+                );
+                System.exit(0);
+            }
+
+            Runtime.getRuntime().addShutdownHook(new Thread(InstanceChecker::releaseLock));
             
             Main mainUI = new Main();
             String applicationName = applicationProperty.getProperty("app.name");
@@ -49,7 +63,7 @@ public class DiscordFeedHub {
             Image macImageLogo = defaultToolkit.getImage(Utility.getMacApplicationImageURL());
             Image systemTrayImageLogo = defaultToolkit.getImage(Utility.getSystemTrayImageURL());
             // setup tray icon
-            new ApplicationTray(
+            ApplicationTray applicationTray = new ApplicationTray(
                     applicationName, 
                     systemTrayImageLogo, 
                     (ActionEvent e) -> {
@@ -58,14 +72,20 @@ public class DiscordFeedHub {
                         }
                     },
                     Utility.getTrayPopupMenu(mainUI)
-            ).setUpTray();
+            );
+            
+            applicationTray.setUpTray();
             
             // setup task bar for mac os
-            new ApplicationTaskbar(macImageLogo).setUpTaskBar();
+            ApplicationTaskbar applicationTaskbar = new ApplicationTaskbar(macImageLogo);
+            applicationTaskbar.setUpTaskBar();
+            
             if (argsList != null && !argsList.isEmpty() && argsList.contains(Constants.STARTUP_ARGS_MINIMIZED)) {
                 Utility.getScheduler().start(null);
             } else {
-                mainUI.setVisible(true);
+                SwingUtilities.invokeLater(() -> {
+                    mainUI.setVisible(true);
+                });
             }
             for (String arg : argsList) {
                 if (arg.contains(Constants.STARTUP_ARGS_DELETE)) {
@@ -74,7 +94,7 @@ public class DiscordFeedHub {
                 }
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "Unable to start application", applicationProperty.getProperty("app.name"), JOptionPane.ERROR_MESSAGE);
             DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }

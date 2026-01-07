@@ -47,10 +47,10 @@
                   <Component id="textFieldWebhookDelay" alignment="1" max="32767" attributes="0"/>
                   <Component id="comboBoxThemes" alignment="1" max="32767" attributes="0"/>
                   <Component id="comboBoxFont" alignment="1" max="32767" attributes="0"/>
-                  <Component id="spinnerFontSize" linkSize="4" alignment="1" min="-2" pref="389" max="-2" attributes="0"/>
-                  <Component id="checkboxRunStartup" linkSize="4" min="-2" pref="389" max="-2" attributes="0"/>
+                  <Component id="spinnerFontSize" alignment="1" max="32767" attributes="0"/>
+                  <Component id="checkboxRunStartup" min="-2" pref="389" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

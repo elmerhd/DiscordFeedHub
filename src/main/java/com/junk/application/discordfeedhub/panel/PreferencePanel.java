@@ -1,6 +1,7 @@
 package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
+import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.NumericDocumentFilter;
 import com.junk.application.discordfeedhub.utils.Preference;
 import com.junk.application.discordfeedhub.utils.StartupHelper;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -23,14 +23,19 @@ import javax.swing.text.AbstractDocument;
  *
  * @author elmerhd
  */
-public class PreferencePanel extends javax.swing.JPanel {
+public class PreferencePanel extends ExtendedPanel {
     
     private File preferenceFile;
-    private JDialog parentDialog;
     /**
      * Creates new form PreferencePanel
      */
     public PreferencePanel() {
+        super();
+    }
+    
+    @Override
+    public void onInitializedPanel() {
+        DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.INFO, "Initializing Components");
         initComponents();
         this.preferenceFile = Utility.getPreference().getFile();
     }
@@ -72,13 +77,8 @@ public class PreferencePanel extends javax.swing.JPanel {
         return comboBoxModelFonts;
     }
     
-    
-    
-    public void setParentDialog(JDialog parentDialog) {
-        this.parentDialog = parentDialog;
-    }
-    
     public void saveSettings() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.INFO, "Saving preferences");
         Theme selectedTheme = (Theme)comboBoxThemes.getSelectedItem();
         Preference pref = new Preference(preferenceFile);
         pref.setTheme(selectedTheme);
@@ -89,7 +89,7 @@ public class PreferencePanel extends javax.swing.JPanel {
         pref.setRunningAtStartup(checkboxRunStartup.isSelected());
         pref.savePreference();
         Utility.setPreference(pref);
-        DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Saving settings " + pref.toString());
+        DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.INFO, "Preferences saved");
     }
 
     /**
@@ -198,13 +198,10 @@ public class PreferencePanel extends javax.swing.JPanel {
                     .addComponent(textFieldWebhookDelay, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(comboBoxThemes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(comboBoxFont, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spinnerFontSize, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerFontSize, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkboxRunStartup, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {checkboxRunStartup, spinnerFontSize});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -265,10 +262,6 @@ public class PreferencePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_spinnerFontSizeStateChanged
 
-    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
-        parentDialog.dispose();
-    }//GEN-LAST:event_buttonCloseActionPerformed
-
     private void textFieldSchedulerIntervalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSchedulerIntervalKeyReleased
         try {
             saveSettings();
@@ -292,6 +285,10 @@ public class PreferencePanel extends javax.swing.JPanel {
             DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }//GEN-LAST:event_checkboxRunStartupActionPerformed
+
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
+        this.closeParentDialog();
+    }//GEN-LAST:event_buttonCloseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

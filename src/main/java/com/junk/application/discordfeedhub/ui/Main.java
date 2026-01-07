@@ -61,10 +61,7 @@ public class Main extends javax.swing.JFrame {
         settingsButton.setButtonType( FlatButton.ButtonType.toolBarButton );
         settingsButton.setFocusable( false );
         settingsButton.addActionListener((ActionEvent e) -> {
-            ExtendedDialog extendedDialog = null;
-            PreferencePanel preferencePanel = new PreferencePanel();
-            extendedDialog = new ExtendedDialog(this, "Preferences", preferencePanel);
-            preferencePanel.setParentDialog(extendedDialog);
+            ExtendedDialog extendedDialog = new ExtendedDialog(this, "Preferences", new PreferencePanel());
             extendedDialog.setVisible(true);
         });
         menuBarMenu.add( Box.createGlue() );
@@ -178,33 +175,21 @@ public class Main extends javax.swing.JFrame {
 
     private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
         ExtendedDialog extendedDialog;
-        try {
-            extendedDialog = new ExtendedDialog(this, "About", new AboutPanel());
-            extendedDialog.setVisible(true);
-        } catch (IOException ex) {
-            DiscordFeedHubLogger.getLogger(Main.class.getName()).log(Level.SEVERE, (String) null, ex);
-        }
+        extendedDialog = new ExtendedDialog(this, "About", new AboutPanel());
+        extendedDialog.setVisible(true);
     }//GEN-LAST:event_menuItemAboutActionPerformed
 
     private void menuItemCheckUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCheckUpdatesActionPerformed
         try {
-            
-            ExtendedDialog extendedDialog = null;
-            CheckUpdatePanel checkUpdatePanel = new CheckUpdatePanel();
-            extendedDialog = new ExtendedDialog(this, "Update Checker", checkUpdatePanel);
-            checkUpdatePanel.setParentDialog(extendedDialog);
+            ExtendedDialog extendedDialog = new ExtendedDialog(this, "Version Checker", new CheckUpdatePanel());
             extendedDialog.setVisible(true);
         } catch (IOException ex) {
             DiscordFeedHubLogger.getLogger(Main.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
-        
     }//GEN-LAST:event_menuItemCheckUpdatesActionPerformed
 
     private void menuItemViewLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewLogsActionPerformed
-        ExtendedDialog extendedDialog = null;
-        LogPanel checkUpdatePanel = new LogPanel();
-        extendedDialog = new ExtendedDialog(this, "Logs", checkUpdatePanel);
-        checkUpdatePanel.setParentDialog(extendedDialog);
+        ExtendedDialog extendedDialog = new ExtendedDialog(this, "Logs", new LogPanel());
         extendedDialog.setVisible(true);
     }//GEN-LAST:event_menuItemViewLogsActionPerformed
 

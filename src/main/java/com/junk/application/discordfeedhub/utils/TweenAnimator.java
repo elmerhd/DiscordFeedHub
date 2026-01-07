@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenAccessor;
 import aurelienribon.tweenengine.TweenManager;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 
 /**
@@ -59,9 +60,9 @@ public class TweenAnimator {
                         tweenManager.update(delta);
                     });
                 } catch (InterruptedException | InvocationTargetException ex) {
-                    System.getLogger(TweenAnimator.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    DiscordFeedHubLogger.getLogger(TweenAnimator.class.getName()).log(Level.INFO, (String) null, ex);
+        
                 }
-
                 deltaLastMillis = newMillis;
             }
         };

@@ -17,8 +17,8 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="294" max="32767" attributes="0"/>
-              <Component id="buttonDownloadInstall" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="289" max="32767" attributes="0"/>
+              <Component id="buttonDownloadRestart" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonClose" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -51,11 +51,11 @@
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="labelDownloads" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="progressBarStatus" min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="progressBarStatus" min="-2" pref="12" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="buttonClose" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="buttonDownloadInstall" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buttonDownloadRestart" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
@@ -82,18 +82,18 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCloseActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="buttonDownloadInstall">
+    <Component class="javax.swing.JButton" name="buttonDownloadRestart">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Utility.getDownloadIcon()" type="code"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Download &amp; Install"/>
+        <Property name="text" type="java.lang.String" value="Download &amp; Restart"/>
         <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="hasDownloadURL()" type="code"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDownloadInstallActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDownloadRestartActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelStatus">

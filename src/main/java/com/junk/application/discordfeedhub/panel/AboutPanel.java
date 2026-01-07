@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Linear;
 import com.junk.application.discordfeedhub.utils.ComponentAccessor;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
+import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Color;
@@ -23,23 +24,36 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  *
  * @author elmerhd
  */
-public class AboutPanel extends javax.swing.JPanel {
+public class AboutPanel extends ExtendedPanel {
 
     /**
      * Creates new form AboutPanel
      */
-    public AboutPanel() throws IOException {
-        initComponents();
-        setupInfo();
-        setupAnimation();
+    public AboutPanel() {
+        super();
     }
     
-    public void setupAnimation() {
+    @Override
+    public void onInitializedPanel() {
+        try {
+            DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.INFO, "Initializing Components");
+            initComponents();
+            setupInfo();
+            startAnimation();
+        } catch (IOException ex) {
+            DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+        }
+    }
+    
+    public void startAnimation() {
+        DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.INFO, "Starting Animation");
         TweenCallback callback = (int x, BaseTween<?> bt) -> {
             int snowCount = 20;
             for (int i = 0; i < snowCount; i++) {
@@ -111,20 +125,23 @@ public class AboutPanel extends javax.swing.JPanel {
     }
     
     public void setupInfo() throws IOException {
+        DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.INFO, "Setting up application information");
         String htmlContent = loadHtmlContent();
         editorPaneInfo.setText(htmlContent);
         editorPaneInfo.setCaretPosition(0);
 
-        editorPaneInfo.addHyperlinkListener(e -> {
-            if (e.getEventType() == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED) {
-                try {
-                    Desktop.getDesktop().browse(new URI(e.getURL().toString()));
-                } catch (Exception ex) {
-                    DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
-                }
-            }
-        });
+        editorPaneInfo.addHyperlinkListener(hyperlinkListener);
     }
+    
+    public HyperlinkListener hyperlinkListener = (HyperlinkEvent e) -> {
+        if (e.getEventType() == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED) {
+            try {
+                Desktop.getDesktop().browse(new URI(e.getURL().toString()));
+            } catch (Exception ex) {
+                DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            }
+        }
+    };
     
     private String loadHtmlContent() throws IOException {
         String html = "";

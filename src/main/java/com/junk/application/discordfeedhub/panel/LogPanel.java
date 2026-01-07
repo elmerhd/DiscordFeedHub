@@ -2,6 +2,7 @@ package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.Log;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
+import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Component;
 import java.awt.Desktop;
@@ -15,7 +16,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.JDialog;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -26,14 +26,18 @@ import javax.swing.tree.TreePath;
  *
  * @author elmerhd
  */
-public class LogPanel extends javax.swing.JPanel {
+public class LogPanel extends ExtendedPanel {
     
-    private Map<String, List<Log>> treeMap = new HashMap<>();
-    private JDialog parentDialog;
     /**
      * Creates new form LoggerPanel
      */
     public LogPanel() {
+        super();
+    }
+    
+    @Override
+    public void onInitializedPanel() {
+        DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.INFO, "Initializing Components");
         initComponents();
     }
     
@@ -115,7 +119,7 @@ public class LogPanel extends javax.swing.JPanel {
     }
     
     public static List<Path> findByFileExtension(Path path, String fileExtension){
-        
+        DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.INFO, "Scanning log files");
         List<Path> result = null;
         try (Stream<Path> walk = Files.walk(path)) {
             result = walk
@@ -126,10 +130,6 @@ public class LogPanel extends javax.swing.JPanel {
             DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
         return result;
-    }
-    
-    public void setParentDialog(JDialog parentDialog) {
-        this.parentDialog = parentDialog;
     }
 
     /**
@@ -180,6 +180,7 @@ public class LogPanel extends javax.swing.JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             if (node.getUserObject() instanceof Path file) {
                 try {
+                    DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.INFO, "Log file opened : " +file.toString());
                     Desktop.getDesktop().open(file.toFile());
                 } catch (IOException ex) {
                     DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
