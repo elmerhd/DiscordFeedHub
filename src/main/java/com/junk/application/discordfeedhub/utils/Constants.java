@@ -22,4 +22,5 @@ public class Constants {
     public static final String STARTUP_ARGS_MINIMIZED = "--start-minimized";
     public static final String STARTUP_ARGS_DELETE = "--delete=";
     public static final String LATEST_RELEASE_API = "https://api.github.com/repos/elmerhd/DiscordFeedHub/releases/latest";
+    public static final String STARTUP_ARGS_UPDATE = "--update";
 }
