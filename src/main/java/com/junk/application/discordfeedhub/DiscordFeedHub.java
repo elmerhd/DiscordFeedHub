@@ -40,14 +40,17 @@ public class DiscordFeedHub {
             Utility.installLookAndFeels();
             Utility.createApplicationFolder(applicationProperty);
             Utility.checkSettings();
-            if (!InstanceChecker.acquireLock(applicationProperty) && !argsList.contains(Constants.STARTUP_ARGS_UPDATE)) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    applicationProperty.get("app.name")+" is already running.",
-                    "Already Running",
-                    JOptionPane.WARNING_MESSAGE
-                );
-                System.exit(0);
+            boolean containsUpdate = argsList.contains(Constants.STARTUP_ARGS_UPDATE);
+            if (!containsUpdate) {
+                if (!InstanceChecker.acquireLock(applicationProperty)) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        applicationProperty.get("app.name")+" is already running.",
+                        "Already Running",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                    System.exit(0);
+                }
             }
 
             Runtime.getRuntime().addShutdownHook(new Thread(InstanceChecker::releaseLock));
