@@ -1,6 +1,7 @@
 package com.junk.application.discordfeedhub.panel;
 
 import com.junk.application.discordfeedhub.model.UpdateInfo;
+import com.junk.application.discordfeedhub.utils.Constants;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.GitHubUpdateChecker;
@@ -80,7 +81,8 @@ public class CheckUpdatePanel extends ExtendedPanel {
                         "javaw",
                         "-jar",
                         tempJar.getAbsolutePath(),
-                        "--delete=" + Utility.getRunningJarFile().getAbsolutePath()
+                        Constants.STARTUP_ARGS_DELETE + Utility.getRunningJarFile().getAbsolutePath(),
+                        Constants.STARTUP_ARGS_UPDATE
                 ).start();
 
                 exitDelayThread.start();
