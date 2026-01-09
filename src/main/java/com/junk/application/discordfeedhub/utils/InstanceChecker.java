@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *
@@ -21,6 +22,7 @@ public final class InstanceChecker {
 
     public static boolean acquireLock(Properties props) {
         try {
+            DiscordFeedHubLogger.getLogger(InstanceChecker.class.getName()).log(Level.INFO, "Acquiring app lock");
             Path lockFile = Path.of(
                 System.getProperty("user.home"),
                 props.getProperty("app.folder"),
@@ -39,6 +41,7 @@ public final class InstanceChecker {
             return lock != null;
 
         } catch (IOException ex) {
+            DiscordFeedHubLogger.getLogger(InstanceChecker.class.getName()).log(Level.SEVERE, (String) null, ex);
             return false;
         }
     }
@@ -47,6 +50,8 @@ public final class InstanceChecker {
         try {
             if (lock != null) lock.release();
             if (channel != null) channel.close();
-        } catch (IOException ignored) {}
+        } catch (IOException ex) {
+            DiscordFeedHubLogger.getLogger(InstanceChecker.class.getName()).log(Level.SEVERE, (String) null, ex);
+        }
     }
 }
