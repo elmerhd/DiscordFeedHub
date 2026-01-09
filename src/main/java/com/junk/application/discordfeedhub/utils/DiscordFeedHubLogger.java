@@ -17,6 +17,7 @@ import java.util.logging.SimpleFormatter;
 public class DiscordFeedHubLogger {
     private static final Logger logger = Logger.getLogger(DiscordFeedHubLogger.class.getName());
     private static String session = null;
+    private static boolean initialized = false;
     
     static {
         session = LocalDateTime.now()
@@ -24,8 +25,16 @@ public class DiscordFeedHubLogger {
                     "yyyy-MM-dd"));
     }
     
+    
+    
     public static Logger getLogger(String name) {
-        
+        if (!initialized) {
+            init();
+        }
+        return logger;
+    }
+    
+    public static void init() {
         Properties properties;
         try {
             properties = Utility.getApplicationProperty();
@@ -47,9 +56,9 @@ public class DiscordFeedHubLogger {
             logger.addHandler(handler);
             logger.setUseParentHandlers(false);
             logger.setLevel(Level.ALL);
+            initialized = true;
         } catch (IOException ex) {
             logger.log(Level.SEVERE, (String) null, ex);
         }
-        return logger;
     }
 }
