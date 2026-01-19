@@ -242,7 +242,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_comboBoxThemesItemStateChanged
 
@@ -250,7 +250,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_comboBoxFontItemStateChanged
 
@@ -258,7 +258,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_spinnerFontSizeStateChanged
 
@@ -266,7 +266,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_textFieldSchedulerIntervalKeyReleased
 
@@ -274,7 +274,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_textFieldWebhookDelayKeyReleased
 
@@ -282,7 +282,7 @@ public class PreferencePanel extends ExtendedPanel {
         try {
             saveSettings();
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, (String) null, ex);
+            DiscordFeedHubLogger.getLogger(PreferencePanel.class.getName()).log(Level.SEVERE, "Failed to save preferences", ex);
         }
     }//GEN-LAST:event_checkboxRunStartupActionPerformed
 

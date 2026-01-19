@@ -44,7 +44,7 @@ public class RSSReaderTask implements Runnable {
             for (SyndEntry entry : items) {
                 DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Item found => " +entry.getTitle()));
                 boolean isPosted = DatabaseManager.isPosted(source.id(), entry.getLink());
-                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Checking item in db exist? ("+isPosted+") "));
+                DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Checking item in db exist? ("+isPosted+") skipping"));
                 if (!isPosted) {
                     String sanitizedDescription = Jsoup.clean(entry.getDescription().getValue(), Safelist.none());
                     JSONObject embed = new JSONObject()
@@ -57,7 +57,6 @@ public class RSSReaderTask implements Runnable {
                     
                     JSONObject payload = new JSONObject()
                     .put("embeds", new org.json.JSONArray().put(embed));
-                    DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Queueing item : => " + entry.getTitle()));
                     DiscordPostQueue.enqueue(new DiscordPost(source.discordWebhookUrl(), payload, source, entry));
                 }
             }

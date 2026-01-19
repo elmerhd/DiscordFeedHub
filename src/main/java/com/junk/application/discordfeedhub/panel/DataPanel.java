@@ -159,15 +159,15 @@ public class DataPanel extends javax.swing.JPanel {
             ExtendedDialog extendedDialog = new ExtendedDialog(parent, "Update RSS Resource", new ResourcePanel(this, true, id));
             extendedDialog.setVisible(true);
         } catch (IndexOutOfBoundsException ex) {
-            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.SEVERE, "No row selected from the table!", ex);
-            JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.ERROR_MESSAGE);
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.WARNING, "No row selected from the table!", ex);
+            JOptionPane.showMessageDialog(this, "Select a row from the table!", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void toggleButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleButtonRunActionPerformed
         if (model.getRowCount() < 1) {
-            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "No RSS Resource!");
-            JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.ERROR_MESSAGE);
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.WARNING, "No RSS Resource!");
+            JOptionPane.showMessageDialog(this, "No RSS Resource!", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
         

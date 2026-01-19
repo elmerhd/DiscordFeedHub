@@ -28,6 +28,7 @@ public class Main extends javax.swing.JFrame {
     
     private DataPanel dataPanel = null;
     private LoadingPanel loadingPanel = null;
+    
     /**
      * Creates new form Main
      */
@@ -90,8 +91,6 @@ public class Main extends javax.swing.JFrame {
         super.setVisible(b);
     }
     
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

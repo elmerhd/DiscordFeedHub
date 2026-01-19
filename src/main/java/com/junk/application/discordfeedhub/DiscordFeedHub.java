@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 public class DiscordFeedHub {
 
     public static void main(String[] args){
+        DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"Starting application");
         new DiscordFeedHub().launchApplication(args);
     }
     
@@ -33,7 +34,7 @@ public class DiscordFeedHub {
         Properties applicationProperty = null;
         try {
             List<String> argsList = Arrays.asList(args);
-            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"app args :" + argsList.toString());
+            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"application args :" + argsList.toString());
             applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
