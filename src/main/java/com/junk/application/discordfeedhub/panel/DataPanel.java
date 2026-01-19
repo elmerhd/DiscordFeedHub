@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
@@ -71,6 +73,10 @@ public class DataPanel extends javax.swing.JPanel {
     public void checkRunningScheduler() {
         toggleButtonRun.setText(getRunButtonText());
         toggleButtonRun.setSelected(Utility.getScheduler().isStarted());
+    }
+    
+    public JLabel getStatusLabel() {
+        return labelStatus;
     }
 
     /**

@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 /**
@@ -65,8 +66,8 @@ public class Main extends javax.swing.JFrame {
             ExtendedDialog extendedDialog = new ExtendedDialog(this, "Preferences", new PreferencePanel());
             extendedDialog.setVisible(true);
         });
-        menuBarMenu.add( Box.createGlue() );
-        menuBarMenu.add( settingsButton);
+        menuBarMenu.add(Box.createGlue());
+        menuBarMenu.add(settingsButton);
         UIManager.put( "MenuItem.selectionType", "underline");
     }
     
@@ -89,6 +90,13 @@ public class Main extends javax.swing.JFrame {
     public void setVisible(boolean b) {
         dataPanel.checkRunningScheduler();
         super.setVisible(b);
+    }
+    
+    public JLabel getStatusLabel() {
+        if (dataPanel == null) {
+            return null;
+        }
+        return dataPanel.getStatusLabel();
     }
     
     /**

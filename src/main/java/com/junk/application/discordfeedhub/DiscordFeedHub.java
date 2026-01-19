@@ -85,7 +85,7 @@ public class DiscordFeedHub {
             applicationTaskbar.setUpTaskBar();
             
             if (argsList != null && !argsList.isEmpty() && argsList.contains(Constants.STARTUP_ARGS_MINIMIZED)) {
-                Utility.getScheduler().start(null);
+                Utility.getScheduler().start(mainUI.getStatusLabel());
             } else {
                 SwingUtilities.invokeLater(() -> {
                     mainUI.setVisible(true);
