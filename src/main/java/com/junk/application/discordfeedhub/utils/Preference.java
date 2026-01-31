@@ -115,6 +115,10 @@ public class Preference {
     public Integer getFontSize() {
         return fontSize;
     }
+    
+    public Font getFont() {
+        return new Font(fontName, Font.PLAIN, fontSize);
+    }
 
     public void setFontName(String fontName) {
         this.fontName = fontName;

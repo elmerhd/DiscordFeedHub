@@ -1,6 +1,5 @@
 package com.junk.application.discordfeedhub.panel;
 
-import com.junk.application.discordfeedhub.model.Log;
 import com.junk.application.discordfeedhub.utils.DiscordFeedHubLogger;
 import com.junk.application.discordfeedhub.utils.ExtendedPanel;
 import com.junk.application.discordfeedhub.utils.Utility;
@@ -9,9 +8,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -82,9 +79,7 @@ public class LogPanel extends ExtendedPanel {
             }
 
         } catch (IOException ex) {
-            DiscordFeedHubLogger
-                    .getLogger(LogPanel.class.getName())
-                    .log(Level.SEVERE, "Failed to load log tree", ex);
+            DiscordFeedHubLogger.getLogger(LogPanel.class.getName()).log(Level.SEVERE, "Failed to load log tree", ex);
         }
         return new DefaultTreeModel(root);
     }

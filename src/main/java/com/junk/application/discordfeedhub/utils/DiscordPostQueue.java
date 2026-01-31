@@ -28,6 +28,7 @@ public final class DiscordPostQueue {
        ============================= */
 
     public static void enqueue(DiscordPost post) {
+        DiscordFeedHubLogger.getLogger(RSSReaderTask.class.getName()).log(Level.INFO, () -> ("Queueing item : => " + post.getEntry().getTitle()));
         queue.offer(post);
         autoStart();
     }

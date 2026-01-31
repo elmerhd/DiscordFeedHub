@@ -115,7 +115,7 @@ public class LoadingPanel extends javax.swing.JPanel {
             animateExplosion(baseX, baseY);
 
         } catch (Exception ex) {
-            DiscordFeedHubLogger.getLogger(LoadingPanel.class.getName()).log(Level.SEVERE, "No row selected from the table!", ex);
+            DiscordFeedHubLogger.getLogger(LoadingPanel.class.getName()).log(Level.SEVERE, (String) null, ex);
         }
     }
     

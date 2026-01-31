@@ -129,13 +129,13 @@ public class AboutPanel extends ExtendedPanel {
         String htmlContent = loadHtmlContent();
         editorPaneInfo.setText(htmlContent);
         editorPaneInfo.setCaretPosition(0);
-
         editorPaneInfo.addHyperlinkListener(hyperlinkListener);
     }
     
     public HyperlinkListener hyperlinkListener = (HyperlinkEvent e) -> {
         if (e.getEventType() == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED) {
             try {
+                DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.INFO, () -> "Link clicked : " + e.getURL().toString());
                 Desktop.getDesktop().browse(new URI(e.getURL().toString()));
             } catch (Exception ex) {
                 DiscordFeedHubLogger.getLogger(AboutPanel.class.getName()).log(Level.SEVERE, (String) null, ex);

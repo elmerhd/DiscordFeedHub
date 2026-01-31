@@ -10,6 +10,7 @@ import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Arrays;
@@ -26,6 +27,7 @@ import javax.swing.SwingUtilities;
 public class DiscordFeedHub {
 
     public static void main(String[] args){
+        DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"Starting application");
         new DiscordFeedHub().launchApplication(args);
     }
     
@@ -33,7 +35,7 @@ public class DiscordFeedHub {
         Properties applicationProperty = null;
         try {
             List<String> argsList = Arrays.asList(args);
-            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"app args :" + argsList.toString());
+            DiscordFeedHubLogger.getLogger(DiscordFeedHub.class.getName()).log(Level.INFO,"application args :" + argsList.toString());
             applicationProperty = Utility.getApplicationProperty();
             TweenAnimationManager.registerTweenAccessors();
             
@@ -82,9 +84,8 @@ public class DiscordFeedHub {
             // setup task bar for mac os
             ApplicationTaskbar applicationTaskbar = new ApplicationTaskbar(macImageLogo);
             applicationTaskbar.setUpTaskBar();
-            
             if (argsList != null && !argsList.isEmpty() && argsList.contains(Constants.STARTUP_ARGS_MINIMIZED)) {
-                Utility.getScheduler().start(null);
+                Utility.getScheduler().start(mainUI.getStatusLabel());
             } else {
                 SwingUtilities.invokeLater(() -> {
                     mainUI.setVisible(true);

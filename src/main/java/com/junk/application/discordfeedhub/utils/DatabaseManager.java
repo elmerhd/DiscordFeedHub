@@ -1,5 +1,6 @@
 package com.junk.application.discordfeedhub.utils;
 
+import com.junk.application.discordfeedhub.model.DmlStatus;
 import com.junk.application.discordfeedhub.model.DmlResult;
 import com.junk.application.discordfeedhub.model.RssSource;
 import java.io.IOException;
@@ -23,7 +24,6 @@ import java.util.logging.Level;
 public class DatabaseManager {
     
     static {
-        
         try {
             DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, "Creating table if not exist!");
             Connection conn = DriverManager.getConnection(getDatabaseConnectionURL());
@@ -75,7 +75,6 @@ public class DatabaseManager {
     public static Connection getConnection() throws SQLException, IOException {
         return DriverManager.getConnection(getDatabaseConnectionURL());
     }
-    
     
     public static RssSource getRssResourceById(int id) {
         DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Getting resource by id : " +id);
@@ -280,7 +279,6 @@ public class DatabaseManager {
             ps.setString(2, guid);
             ps.setString(3, itemLink);
             int affectedRows = ps.executeUpdate();
-            DiscordFeedHubLogger.getLogger(DatabaseManager.class.getName()).log(Level.INFO, () -> "Marking item as posted : "+sourceId+ " item Link : " + itemLink);
             if (affectedRows == 0) {
                 return DmlResult.failure(
                         DmlStatus.NO_ROWS_AFFECTED,

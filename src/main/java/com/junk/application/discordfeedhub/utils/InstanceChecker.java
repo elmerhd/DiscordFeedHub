@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 /**
  *
- * @author elmer
+ * @author elmerhd
  */
 public final class InstanceChecker {
 

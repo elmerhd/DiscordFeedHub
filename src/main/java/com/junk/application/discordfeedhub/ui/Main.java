@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 /**
@@ -28,6 +29,7 @@ public class Main extends javax.swing.JFrame {
     
     private DataPanel dataPanel = null;
     private LoadingPanel loadingPanel = null;
+    
     /**
      * Creates new form Main
      */
@@ -64,8 +66,8 @@ public class Main extends javax.swing.JFrame {
             ExtendedDialog extendedDialog = new ExtendedDialog(this, "Preferences", new PreferencePanel());
             extendedDialog.setVisible(true);
         });
-        menuBarMenu.add( Box.createGlue() );
-        menuBarMenu.add( settingsButton);
+        menuBarMenu.add(Box.createGlue());
+        menuBarMenu.add(settingsButton);
         UIManager.put( "MenuItem.selectionType", "underline");
     }
     
@@ -90,8 +92,13 @@ public class Main extends javax.swing.JFrame {
         super.setVisible(b);
     }
     
+    public JLabel getStatusLabel() {
+        if (dataPanel == null) {
+            return null;
+        }
+        return dataPanel.getStatusLabel();
+    }
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

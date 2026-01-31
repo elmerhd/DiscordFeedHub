@@ -28,7 +28,7 @@ public class StartupHelper {
      */
     public static boolean isWindows() {
         String os = System.getProperty("os.name").toLowerCase();
-        DiscordFeedHubLogger.getLogger(StartupHelper.class.getName()).log(Level.INFO, "Checking operating system : " + os);
+        DiscordFeedHubLogger.getLogger(StartupHelper.class.getName()).log(Level.INFO, () -> "Checking operating system : " + os);
         return os.contains("win");
     }
 

@@ -75,8 +75,6 @@ public class ResourcePanel extends ExtendedPanel {
             !textFieldRssUrl.getText().isEmpty() && 
             !textFieldDiscordWebhook.getText().isBlank();
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

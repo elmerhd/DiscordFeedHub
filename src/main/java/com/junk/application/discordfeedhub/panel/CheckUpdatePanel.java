@@ -114,9 +114,9 @@ public class CheckUpdatePanel extends ExtendedPanel {
         this.checkingUpdates = checking;
         progressBarStatus.setVisible(checking);
         if (checking) {
-            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "Checking for new version!");
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "Checking for new version");
         } else {
-            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "Checking done!");
+            DiscordFeedHubLogger.getLogger(CheckUpdatePanel.class.getName()).log(Level.INFO, "Checking done");
         }
     }
     
