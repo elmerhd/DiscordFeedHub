@@ -25,7 +25,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -142,9 +144,9 @@ public class Utility {
         return applicationFolder;
     }
     
-    public static PopupMenu getTrayPopupMenu(JFrame parentFrame) {
-        PopupMenu popupMenu = new PopupMenu();
-        MenuItem quitMenuItem = new MenuItem("Quit");
+    public static JPopupMenu getTrayPopupMenu(JFrame parentFrame) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem quitMenuItem = new JMenuItem("Quit");
         quitMenuItem.setFont(parentFrame.getFont());
         quitMenuItem.addActionListener((ActionEvent e) -> {
             int option = JOptionPane.showConfirmDialog(parentFrame, "Sure to quit " +parentFrame.getTitle()+ "?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -152,7 +154,7 @@ public class Utility {
                 System.exit(0);
             }
         });
-        MenuItem openItem = new MenuItem("Open");
+        JMenuItem openItem = new JMenuItem("Open");
         openItem.setFont(parentFrame.getFont());
         openItem.addActionListener((ActionEvent e) -> {
             if (!parentFrame.isVisible()) {

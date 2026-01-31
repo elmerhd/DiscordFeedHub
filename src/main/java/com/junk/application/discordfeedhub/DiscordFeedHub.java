@@ -10,6 +10,7 @@ import com.junk.application.discordfeedhub.utils.TweenAnimationManager;
 import com.junk.application.discordfeedhub.utils.Utility;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Arrays;
@@ -83,7 +84,6 @@ public class DiscordFeedHub {
             // setup task bar for mac os
             ApplicationTaskbar applicationTaskbar = new ApplicationTaskbar(macImageLogo);
             applicationTaskbar.setUpTaskBar();
-            
             if (argsList != null && !argsList.isEmpty() && argsList.contains(Constants.STARTUP_ARGS_MINIMIZED)) {
                 Utility.getScheduler().start(mainUI.getStatusLabel());
             } else {
